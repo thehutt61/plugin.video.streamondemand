@@ -38,8 +38,15 @@ sys.path.append(librerias)
 
 from platformcode import launcher
 
-if sys.argv[1] == "1":
-    # Esto solo se ejecuta la primera vez que entramos en el plugin
+if sys.argv[2] == "":
     launcher.start()
+    if config.get_platform() == "boxee":
+      launcher.run()
+    else:
+      import xbmcplugin
+      xbmcplugin.endOfDirectory(handle=int(sys.argv[1]), succeeded=False)
+      xbmc.executebuiltin("Container.Update(" + sys.argv[0] + "?)")
 
-launcher.run()
+else:
+  if sys.argv[2] == "?": sys.argv[2]  = ""
+  launcher.run()

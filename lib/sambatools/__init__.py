@@ -1,5 +1,8 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 #------------------------------------------------------------
-# streamondemand
-# http://www.mimediacenter.info/foro/viewforum.php?f=36
+# pelisalacarta
+# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
 #------------------------------------------------------------
+import os
+import sys
+sys.path.append(os.path.dirname(__file__))

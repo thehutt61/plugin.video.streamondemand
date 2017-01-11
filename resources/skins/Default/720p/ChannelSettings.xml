@@ -3,90 +3,99 @@
     <allowoverlays>false</allowoverlays>  
     <controls>
       <control type="group" id="10001">
-        <centerleft>640</centerleft>
-        <centertop>360</centertop>
+        <posx>240</posx>
+        <posy>110</posy>
         <width>800</width>
         <height>500</height>
         <control type="image">
-          <texture>ChannelSettings/DialogBack.png</texture>
+          <width>800</width>
+          <height>500</height>
+          <texture>Windows/DialogBack.png</texture>
         </control>
         <control type="image">
-          <height>50</height>
-          <texture>ChannelSettings/dialogheader.png</texture>
+          <height>40</height>
+          <width>800</width>
+          <texture>Windows/dialogheader.png</texture>
         </control>
         <control type="label" id="10002">
-          <top>10</top>
-          <height>40</height>
-          <font>font20_title</font>
+          <posy>10</posy>
+          <posx>10</posx>
+          <height>34</height>
+          <width>725</width>
+          <font>font12_title</font>
           <textcolor>0xFFFFA500</textcolor>
           <align>center</align>
           <aligny>center</aligny>
-          <label>Opzioni</label>
+          <label>Opciones</label>
         </control>
         <control type="button" id="10003">
-          <right>15</right>
-          <top>15</top>
-          <width>70</width>
-          <height>40</height>
-          <texturefocus>ChannelSettings/DialogCloseButton-focus.png</texturefocus>
-          <texturenofocus>ChannelSettings/DialogCloseButton.png</texturenofocus>    
+          <posx>735</posx>
+          <posy>15</posy>
+          <width>50</width>
+          <height>30</height>
+          <texturefocus>Controls/DialogCloseButton-focus.png</texturefocus>
+          <texturenofocus>Controls/DialogCloseButton.png</texturenofocus>    
         </control>
         <control type="button" id="10004">
-          <centerleft>230</centerleft>
-          <bottom>30</bottom>
-          <width>150</width>
-          <height>40</height>
-          <texturefocus>ChannelSettings/KeyboardKey.png</texturefocus>
-          <texturenofocus>ChannelSettings/KeyboardKeyNF.png</texturenofocus>  
+          <posx>155</posx>
+          <posy>445</posy>
+          <width>120</width>
+          <height>30</height>
+          <textwidth>110</textwidth>
+          <texturefocus>Controls/KeyboardKey.png</texturefocus>
+          <texturenofocus>Controls/KeyboardKeyNF.png</texturenofocus>  
           <align>center</align>
           <aligny>center</aligny>  
           <label>OK</label>
         </control>
         <control type="button" id="10005">
-          <centerleft>400</centerleft>
-          <bottom>30</bottom>
-          <width>150</width>
-          <height>40</height>
-          <texturefocus>ChannelSettings/KeyboardKey.png</texturefocus>
-          <texturenofocus>ChannelSettings/KeyboardKeyNF.png</texturenofocus>   
+          <posx>325</posx>
+          <posy>445</posy>
+          <width>120</width>
+          <height>30</height>
+          <textwidth>110</textwidth>
+          <texturefocus>Controls/KeyboardKey.png</texturefocus>
+          <texturenofocus>Controls/KeyboardKeyNF.png</texturenofocus>   
           <align>center</align>
           <aligny>center</aligny> 
-          <label>Annulla</label>
+          <label>Cancelar</label>
         </control>
         <control type="button" id="10006">
-          <centerleft>570</centerleft>
-          <bottom>30</bottom>
-          <width>150</width>
-          <height>40</height>
-          <texturefocus>ChannelSettings/KeyboardKey.png</texturefocus>
-          <texturenofocus>ChannelSettings/KeyboardKeyNF.png</texturenofocus>    
+          <posx>495</posx>
+          <posy>445</posy>
+          <width>120</width>
+          <height>30</height>
+          <textwidth>110</textwidth>
+          <texturefocus>Controls/KeyboardKey.png</texturefocus>
+          <texturenofocus>Controls/KeyboardKeyNF.png</texturenofocus>    
           <align>center</align>
           <aligny>center</aligny>
-          <label>Predefinita</label>
+          <label>Por defecto</label>
         </control>
           <control type="group" id="10007">
-          <top>60</top>
-          <left>25</left>
-          <right>50</right>
-          <bottom>80</bottom>
-          <control type="image">
-            <texture>ChannelSettings/BackControls.png</texture>
+          <posy>45</posy>
+          <posx>20</posx>
+          <width>745</width>
+          <height>387</height>
+          <control type="image">  
+            <width>745</width>
+            <height>387</height>
+            <texture>Windows/BackControls.png</texture>
           </control>
-
         </control>
         <control type="image" id="10008">
-          <top>60</top>
-          <left>765</left>
-          <right>25</right>
-          <bottom>80</bottom>
-          <texture>ChannelSettings/ScrollBack.png</texture>
+          <posy>45</posy>
+          <posx>770</posx>
+          <width>10</width>
+          <height>387</height>
+          <texture>Controls/ScrollBack.png</texture>
         </control>
         <control type="image" id="10009">
-          <top>60</top>
-          <left>765</left>
-          <right>25</right>
-          <bottom>80</bottom>
-          <texture>ChannelSettings/ScrollBar.png</texture>
+          <posy>45</posy>
+          <posx>770</posx>
+          <width>10</width>
+          <height>387</height>
+          <texture>Controls/ScrollBar.png</texture>
         </control>
       </control>
     </controls>

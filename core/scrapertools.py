@@ -1,37 +1,37 @@
 ﻿# -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# streamondemand 5
+# pelisalacarta 4
 # Copyright 2015 tvalacarta@gmail.com
-# http://www.mimediacenter.info/foro/viewforum.php?f=36
+# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of streamondemand 5.
+# This file is part of pelisalacarta 4.
 #
-# streamondemand 5 is free software: you can redistribute it and/or modify
+# pelisalacarta 4 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# streamondemand 5 is distributed in the hope that it will be useful,
+# pelisalacarta 4 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
+# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
 # --------------------------------------------------------------------------------
 # Scraper tools for reading and processing web elements
 # --------------------------------------------------------------------------------
 
-import StringIO
-import gzip
 import os
 import re
 import socket
 import time
 import urllib
+import StringIO
+import gzip
 import urllib2
 import urlparse
 
@@ -55,7 +55,7 @@ COOKIES_PATH = os.path.join(config.get_data_path(), "cookies")
 if not os.path.exists(COOKIES_PATH):
   os.mkdir(COOKIES_PATH)
 
-DEFAULT_TIMEOUT = 45
+DEFAULT_TIMEOUT = 20
 
 DEBUG = False
 
@@ -63,7 +63,7 @@ def cache_page(url,post=None,headers=DEFAULT_HEADERS,modo_cache=CACHE_ACTIVA, ti
     return cachePage(url,post,headers,modo_cache,timeout=timeout)
 
 def cachePage(url,post=None,headers=DEFAULT_HEADERS,modoCache=CACHE_ACTIVA, timeout=DEFAULT_TIMEOUT):
-    logger.info("streamondemand.core.scrapertools cachePage url="+url)
+    logger.info("pelisalacarta.core.scrapertools cachePage url="+url)
 
     # Cache desactivada
     modoCache = CACHE_NUNCA #config.get_setting("cache.mode")
@@ -87,7 +87,7 @@ def cachePage(url,post=None,headers=DEFAULT_HEADERS,modoCache=CACHE_ACTIVA, time
     # CACHE_NUNCA: Siempre va a la URL a descargar
     # obligatorio para peticiones POST
     if modoCache == CACHE_NUNCA or post is not None:
-        logger.info("streamondemand.core.scrapertools MODO_CACHE=2 (no cachear)")
+        logger.info("pelisalacarta.core.scrapertools MODO_CACHE=2 (no cachear)")
 
         try:
             data = downloadpage(url,post,headers, timeout=timeout)
@@ -96,14 +96,14 @@ def cachePage(url,post=None,headers=DEFAULT_HEADERS,modoCache=CACHE_ACTIVA, time
 
     # CACHE_SIEMPRE: Siempre descarga de cache, sin comprobar fechas, excepto cuando no está
     elif modoCache == CACHE_SIEMPRE:
-        logger.info("streamondemand.core.scrapertools MODO_CACHE=1 (cachear todo)")
+        logger.info("pelisalacarta.core.scrapertools MODO_CACHE=1 (cachear todo)")
 
         # Obtiene los handlers del fichero en la cache
         cachedFile, newFile = getCacheFileNames(url)
 
         # Si no hay ninguno, descarga
         if cachedFile == "":
-            logger.info("streamondemand.core.scrapertools No está en cache")
+            logger.info("pelisalacarta.core.scrapertools No está en cache")
 
             # Lo descarga
             data = downloadpage(url,post,headers)
@@ -113,16 +113,16 @@ def cachePage(url,post=None,headers=DEFAULT_HEADERS,modoCache=CACHE_ACTIVA, time
             outfile.write(data)
             outfile.flush()
             outfile.close()
-            logger.info("streamondemand.core.scrapertools Grabado a " + newFile)
+            logger.info("pelisalacarta.core.scrapertools Grabado a " + newFile)
         else:
-            logger.info("streamondemand.core.scrapertools Leyendo de cache " + cachedFile)
+            logger.info("pelisalacarta.core.scrapertools Leyendo de cache " + cachedFile)
             infile = open( cachedFile )
             data = infile.read()
             infile.close()
 
     # CACHE_ACTIVA: Descarga de la cache si no ha cambiado
     else:
-        logger.info("streamondemand.core.scrapertools MODO_CACHE=0 (automática)")
+        logger.info("pelisalacarta.core.scrapertools MODO_CACHE=0 (automática)")
 
         # Datos descargados
         data = ""
@@ -132,7 +132,7 @@ def cachePage(url,post=None,headers=DEFAULT_HEADERS,modoCache=CACHE_ACTIVA, time
 
         # Si no hay ninguno, descarga
         if cachedFile == "":
-            logger.info("streamondemand.core.scrapertools No está en cache")
+            logger.info("pelisalacarta.core.scrapertools No está en cache")
 
             # Lo descarga
             data = downloadpage(url,post,headers)
@@ -142,15 +142,15 @@ def cachePage(url,post=None,headers=DEFAULT_HEADERS,modoCache=CACHE_ACTIVA, time
             outfile.write(data)
             outfile.flush()
             outfile.close()
-            logger.info("streamondemand.core.scrapertools Grabado a " + newFile)
+            logger.info("pelisalacarta.core.scrapertools Grabado a " + newFile)
 
         # Si sólo hay uno comprueba el timestamp (hace una petición if-modified-since)
         else:
             # Extrae el timestamp antiguo del nombre del fichero
             oldtimestamp = time.mktime( time.strptime(cachedFile[-20:-6], "%Y%m%d%H%M%S") )
 
-            logger.info("streamondemand.core.scrapertools oldtimestamp="+cachedFile[-20:-6])
-            logger.info("streamondemand.core.scrapertools oldtimestamp="+time.ctime(oldtimestamp))
+            logger.info("pelisalacarta.core.scrapertools oldtimestamp="+cachedFile[-20:-6])
+            logger.info("pelisalacarta.core.scrapertools oldtimestamp="+time.ctime(oldtimestamp))
 
             # Hace la petición
             updated,data = downloadtools.downloadIfNotModifiedSince(url,oldtimestamp)
@@ -158,7 +158,7 @@ def cachePage(url,post=None,headers=DEFAULT_HEADERS,modoCache=CACHE_ACTIVA, time
             # Si ha cambiado
             if updated:
                 # Borra el viejo
-                logger.info("streamondemand.core.scrapertools Borrando "+cachedFile)
+                logger.info("pelisalacarta.core.scrapertools Borrando "+cachedFile)
                 os.remove(cachedFile)
 
                 # Graba en cache el nuevo
@@ -166,10 +166,10 @@ def cachePage(url,post=None,headers=DEFAULT_HEADERS,modoCache=CACHE_ACTIVA, time
                 outfile.write(data)
                 outfile.flush()
                 outfile.close()
-                logger.info("streamondemand.core.scrapertools Grabado a " + newFile)
+                logger.info("pelisalacarta.core.scrapertools Grabado a " + newFile)
             # Devuelve el contenido del fichero de la cache
             else:
-                logger.info("streamondemand.core.scrapertools Leyendo de cache " + cachedFile)
+                logger.info("pelisalacarta.core.scrapertools Leyendo de cache " + cachedFile)
                 infile = open( cachedFile )
                 data = infile.read()
                 infile.close()
@@ -184,17 +184,17 @@ def getCacheFileNames(url):
     # Obtiene el ID de la cache (md5 de la URL)
     cacheId = get_md5(url)
 
-    logger.info("streamondemand.core.scrapertools cacheId="+cacheId)
+    logger.info("pelisalacarta.core.scrapertools cacheId="+cacheId)
 
     # Timestamp actual
     nowtimestamp = time.strftime("%Y%m%d%H%M%S", time.localtime())
-    logger.info("streamondemand.core.scrapertools nowtimestamp="+nowtimestamp)
+    logger.info("pelisalacarta.core.scrapertools nowtimestamp="+nowtimestamp)
 
     # Nombre del fichero
     # La cache se almacena en una estructura CACHE + URL
     ruta = os.path.join( siteCachePath , cacheId[:2] , cacheId[2:] )
     newFile = os.path.join( ruta , nowtimestamp + ".cache" )
-    logger.info("streamondemand.core.scrapertools newFile="+newFile)
+    logger.info("pelisalacarta.core.scrapertools newFile="+newFile)
     if not os.path.exists(ruta):
         os.makedirs( ruta )
 
@@ -206,18 +206,18 @@ def getCacheFileNames(url):
 # Busca ese fichero en la cache
 def getCachedFile(siteCachePath,cacheId):
     mascara = os.path.join(siteCachePath,cacheId[:2],cacheId[2:],"*.cache")
-    logger.info("streamondemand.core.scrapertools mascara="+mascara)
+    logger.info("pelisalacarta.core.scrapertools mascara="+mascara)
     import glob
     ficheros = glob.glob( mascara )
-    logger.info("streamondemand.core.scrapertools Hay %d ficheros con ese id" % len(ficheros))
+    logger.info("pelisalacarta.core.scrapertools Hay %d ficheros con ese id" % len(ficheros))
 
     cachedFile = ""
 
     # Si hay más de uno, los borra (serán pruebas de programación) y descarga de nuevo
     if len(ficheros)>1:
-        logger.info("streamondemand.core.scrapertools Cache inválida")
+        logger.info("pelisalacarta.core.scrapertools Cache inválida")
         for fichero in ficheros:
-            logger.info("streamondemand.core.scrapertools Borrando "+fichero)
+            logger.info("pelisalacarta.core.scrapertools Borrando "+fichero)
             os.remove(fichero)
 
         cachedFile = ""
@@ -231,13 +231,13 @@ def getCachedFile(siteCachePath,cacheId):
 def getSiteCachePath(url):
     # Obtiene el dominio principal de la URL
     dominio = urlparse.urlparse(url)[1]
-    logger.info("streamondemand.core.scrapertools dominio="+dominio)
+    logger.info("pelisalacarta.core.scrapertools dominio="+dominio)
     nombres = dominio.split(".")
     if len(nombres)>1:
         dominio = nombres[len(nombres)-2]+"."+nombres[len(nombres)-1]
     else:
         dominio = nombres[0]
-    logger.info("streamondemand.core.scrapertools dominio="+dominio)
+    logger.info("pelisalacarta.core.scrapertools dominio="+dominio)
 
     # Crea un directorio en la cache para direcciones de ese dominio
     siteCachePath = os.path.join( CACHE_PATH , dominio )
@@ -253,7 +253,7 @@ def getSiteCachePath(url):
         except:
             logger.error("[scrapertools.py] Error al crear directorio "+siteCachePath)
 
-    logger.info("streamondemand.core.scrapertools siteCachePath="+siteCachePath)
+    logger.info("pelisalacarta.core.scrapertools siteCachePath="+siteCachePath)
 
     return siteCachePath
 
@@ -327,13 +327,20 @@ class NoRedirectHandler(urllib2.HTTPRedirectHandler):
     http_error_307 = http_error_302
 
 def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, timeout=DEFAULT_TIMEOUT, header_to_get=None):
-    logger.info("streamondemand.core.scrapertools downloadpage")
-    logger.info("streamondemand.core.scrapertools url="+url)
+    logger.info("pelisalacarta.core.scrapertools downloadpage")
+    logger.info("pelisalacarta.core.scrapertools url="+url)
+
+    data, _ = downloadpageWithResult(url=url, post=post, headers=headers, follow_redirects=follow_redirects, timeout=timeout, header_to_get=header_to_get)
+    return data
+
+def downloadpageWithResult(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, timeout=DEFAULT_TIMEOUT, header_to_get=None):
+    logger.info("pelisalacarta.core.scrapertools downloadpageWithResult")
+    logger.info("pelisalacarta.core.scrapertools url="+url)
 
     if post is not None:
-        logger.info("streamondemand.core.scrapertools post="+post)
+        logger.info("pelisalacarta.core.scrapertools post="+post)
     else:
-        logger.info("streamondemand.core.scrapertools post=None")
+        logger.info("pelisalacarta.core.scrapertools post=None")
 
     # ---------------------------------
     # Instala las cookies
@@ -344,7 +351,8 @@ def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, ti
 
     dominio = urlparse.urlparse(url)[1].replace("www.", "")
     ficherocookies = os.path.join(COOKIES_PATH, dominio + ".dat" )
-    logger.info("streamondemand.core.scrapertools ficherocookies="+ficherocookies)
+    resultCode = 0
+    logger.info("pelisalacarta.core.scrapertools ficherocookies="+ficherocookies)
 
     cj = None
     ClientCookie = None
@@ -352,34 +360,34 @@ def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, ti
 
     # Let's see if cookielib is available
     try:
-        logger.info("streamondemand.core.scrapertools Importando cookielib")
+        logger.info("pelisalacarta.core.scrapertools Importando cookielib")
         import cookielib
     except ImportError:
-        logger.info("streamondemand.core.scrapertools cookielib no disponible")
+        logger.info("pelisalacarta.core.scrapertools cookielib no disponible")
         # If importing cookielib fails
         # let's try ClientCookie
         try:
-            logger.info("streamondemand.core.scrapertools Importando ClientCookie")
+            logger.info("pelisalacarta.core.scrapertools Importando ClientCookie")
             import ClientCookie
         except ImportError:
-            logger.info("streamondemand.core.scrapertools ClientCookie no disponible")
+            logger.info("pelisalacarta.core.scrapertools ClientCookie no disponible")
             # ClientCookie isn't available either
             urlopen = urllib2.urlopen
             Request = urllib2.Request
         else:
-            logger.info("streamondemand.core.scrapertools ClientCookie disponible")
+            logger.info("pelisalacarta.core.scrapertools ClientCookie disponible")
             # imported ClientCookie
             urlopen = ClientCookie.urlopen
             Request = ClientCookie.Request
             cj = ClientCookie.MozillaCookieJar()
 
     else:
-        logger.info("streamondemand.core.scrapertools cookielib disponible")
+        logger.info("pelisalacarta.core.scrapertools cookielib disponible")
         # importing cookielib worked
         urlopen = urllib2.urlopen
         Request = urllib2.Request
 
-        logger.info("streamondemand.core.scrapertools cambio en politicas")
+        logger.info("pelisalacarta.core.scrapertools cambio en politicas")
 
         #cj = cookielib.LWPCookieJar(ficherocookies,policy=MyCookiePolicy())
         #cj = cookielib.MozillaCookieJar(ficherocookies,policy=MyCookiePolicy)
@@ -393,23 +401,23 @@ def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, ti
     if cj is not None:
     # we successfully imported
     # one of the two cookie handling modules
-        logger.info("streamondemand.core.scrapertools Hay cookies")
+        logger.info("pelisalacarta.core.scrapertools Hay cookies")
 
         if os.path.isfile(ficherocookies):
-            logger.info("streamondemand.core.scrapertools Leyendo fichero cookies")
+            logger.info("pelisalacarta.core.scrapertools Leyendo fichero cookies")
             # if we have a cookie file already saved
             # then load the cookies into the Cookie Jar
             try:
                 cj.load(ficherocookies,ignore_discard=True)
             except:
-                logger.info("streamondemand.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
+                logger.info("pelisalacarta.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
                 os.remove(ficherocookies)
 
         # Now we need to get our Cookie Jar
         # installed in the opener;
         # for fetching URLs
         if cookielib is not None:
-            logger.info("streamondemand.core.scrapertools opener usando urllib2 (cookielib)")
+            logger.info("pelisalacarta.core.scrapertools opener usando urllib2 (cookielib)")
             # if we use cookielib
             # then we get the HTTPCookieProcessor
             # and install the opener in urllib2
@@ -420,7 +428,7 @@ def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, ti
             urllib2.install_opener(opener)
 
         else:
-            logger.info("streamondemand.core.scrapertools opener usando ClientCookie")
+            logger.info("pelisalacarta.core.scrapertools opener usando ClientCookie")
             # if we use ClientCookie
             # then we get the HTTPCookieProcessor
             # and install the opener in ClientCookie
@@ -439,40 +447,40 @@ def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, ti
 
     # Construye el request
     if post is None:
-        logger.info("streamondemand.core.scrapertools petición GET")
+        logger.info("pelisalacarta.core.scrapertools petición GET")
     else:
-        logger.info("streamondemand.core.scrapertools petición POST")
+        logger.info("pelisalacarta.core.scrapertools petición POST")
 
     # Añade las cabeceras
-    logger.info("streamondemand.core.scrapertools ---------------------------")
+    logger.info("pelisalacarta.core.scrapertools ---------------------------")
     for header in headers:
-        logger.info("streamondemand.core.scrapertools header %s=%s" % (str(header[0]),str(header[1])) )
+        logger.info("pelisalacarta.core.scrapertools header %s=%s" % (str(header[0]),str(header[1])) )
         txheaders[header[0]]=header[1]
-    logger.info("streamondemand.core.scrapertools ---------------------------")
+    logger.info("pelisalacarta.core.scrapertools ---------------------------")
 
     req = Request(url, post, txheaders)
 
     try:
         if timeout is None:
-            logger.info("streamondemand.core.scrapertools Peticion sin timeout")
+            logger.info("pelisalacarta.core.scrapertools Peticion sin timeout")
             handle=urlopen(req)
         else:
-            logger.info("streamondemand.core.scrapertools Peticion con timeout")
+            logger.info("pelisalacarta.core.scrapertools Peticion con timeout")
             #Para todas las versiones:
             deftimeout = socket.getdefaulttimeout()
             socket.setdefaulttimeout(timeout)
             handle=urlopen(req)
             socket.setdefaulttimeout(deftimeout)
-        logger.info("streamondemand.core.scrapertools ...hecha")
+        logger.info("pelisalacarta.core.scrapertools ...hecha")
 
         # Actualiza el almacén de cookies
-        logger.info("streamondemand.core.scrapertools Grabando cookies...")
+        logger.info("pelisalacarta.core.scrapertools Grabando cookies...")
         cj.save(ficherocookies,ignore_discard=True) #  ,ignore_expires=True
-        logger.info("streamondemand.core.scrapertools ...hecho")
+        logger.info("pelisalacarta.core.scrapertools ...hecho")
 
         # Lee los datos y cierra
         if handle.info().get('Content-Encoding') == 'gzip':
-            logger.info("streamondemand.core.scrapertools gzipped")
+            logger.info("pelisalacarta.core.scrapertools gzipped")
             fin = inicio
             import StringIO
             data=handle.read()
@@ -483,20 +491,23 @@ def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, ti
             gzipper.close()
             fin = time.clock()
         else:
-            logger.info("streamondemand.core.scrapertools normal")
+            logger.info("pelisalacarta.core.scrapertools normal")
             data = handle.read()
+
+        resultCode = handle.code
     except urllib2.HTTPError,e:
         import traceback
         logger.info(traceback.format_exc())
         data = e.read()
+        resultCode = e.code
         #logger.info("data="+repr(data))
-        return data
+        return data, resultCode
 
     info = handle.info()
-    logger.info("streamondemand.core.scrapertools Respuesta")
-    logger.info("streamondemand.core.scrapertools ---------------------------")
+    logger.info("pelisalacarta.core.scrapertools Respuesta")
+    logger.info("pelisalacarta.core.scrapertools ---------------------------")
     for header in info:
-        logger.info("streamondemand.core.scrapertools "+header+"="+info[header])
+        logger.info("pelisalacarta.core.scrapertools "+header+"="+info[header])
 
         # Truco para devolver el valor de un header en lugar del cuerpo entero
         if header_to_get is not None:
@@ -504,7 +515,7 @@ def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, ti
                 data=info[header]
 
     handle.close()
-    logger.info("streamondemand.core.scrapertools ---------------------------")
+    logger.info("pelisalacarta.core.scrapertools ---------------------------")
 
     '''
     # Lanza la petición
@@ -523,9 +534,9 @@ def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, ti
 
     # Tiempo transcurrido
     fin = time.clock()
-    logger.info("streamondemand.core.scrapertools Descargado en %d segundos " % (fin-inicio+1))
+    logger.info("pelisalacarta.core.scrapertools Descargado en %d segundos " % (fin-inicio+1))
 
-    return data
+    return data, resultCode
 
 import cookielib
 class MyCookiePolicy(cookielib.DefaultCookiePolicy):
@@ -566,7 +577,7 @@ def downloadpagewithcookies(url):
 
     dominio = urlparse.urlparse(url)[1].replace("www.", "")
     ficherocookies = os.path.join(COOKIES_PATH, dominio + ".dat" )
-    logger.info("streamondemand.core.scrapertools Cookiefile="+ficherocookies)
+    logger.info("pelisalacarta.core.scrapertools Cookiefile="+ficherocookies)
 
     cj = None
     ClientCookie = None
@@ -608,7 +619,7 @@ def downloadpagewithcookies(url):
             try:
                 cj.load(ficherocookies)
             except:
-                logger.info("streamondemand.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
+                logger.info("pelisalacarta.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
                 os.remove(ficherocookies)
 
         # Now we need to get our Cookie Jar
@@ -656,7 +667,7 @@ def downloadpagewithcookies(url):
     return data
 
 def downloadpageWithoutCookies(url):
-    logger.info("streamondemand.core.scrapertools Descargando " + url)
+    logger.info("pelisalacarta.core.scrapertools Descargando " + url)
     inicio = time.clock()
     req = urllib2.Request(url)
     req.add_header('User-Agent', DEFAULT_USER_AGENT)
@@ -671,7 +682,7 @@ def downloadpageWithoutCookies(url):
     data=response.read()
     response.close()
     fin = time.clock()
-    logger.info("streamondemand.core.scrapertools Descargado en %d segundos " % (fin-inicio+1))
+    logger.info("pelisalacarta.core.scrapertools Descargado en %d segundos " % (fin-inicio+1))
     return data
 
 
@@ -729,7 +740,7 @@ def downloadpageGzip(url):
             try:
                 cj.load(ficherocookies)
             except:
-                logger.info("streamondemand.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
+                logger.info("pelisalacarta.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
                 os.remove(ficherocookies)
 
         # Now we need to get our Cookie Jar
@@ -781,7 +792,7 @@ def downloadpageGzip(url):
     handle.close()
 
     fin = time.clock()
-    logger.info("streamondemand.core.scrapertools Descargado 'Gzipped data' en %d segundos " % (fin-inicio+1))
+    logger.info("pelisalacarta.core.scrapertools Descargado 'Gzipped data' en %d segundos " % (fin-inicio+1))
 
     # Descomprime el archivo de datos Gzip
     try:
@@ -793,7 +804,7 @@ def downloadpageGzip(url):
         data1 = gzipper.read()
         gzipper.close()
         fin = time.clock()
-        logger.info("streamondemand.core.scrapertools 'Gzipped data' descomprimido en %d segundos " % (fin-inicio+1))
+        logger.info("pelisalacarta.core.scrapertools 'Gzipped data' descomprimido en %d segundos " % (fin-inicio+1))
         return data1
     except:
         return data
@@ -801,7 +812,7 @@ def downloadpageGzip(url):
 def printMatches(matches):
     i = 0
     for match in matches:
-        logger.info("streamondemand.core.scrapertools %d %s" % (i , match))
+        logger.info("pelisalacarta.core.scrapertools %d %s" % (i , match))
         i = i + 1
 
 def get_match(data,patron,index=0):
@@ -1101,19 +1112,19 @@ def getLocationHeaderFromResponse(url):
 
 def get_header_from_response(url,header_to_get="",post=None,headers=DEFAULT_HEADERS):
     header_to_get = header_to_get.lower()
-    logger.info("streamondemand.core.scrapertools get_header_from_response url="+url+", header_to_get="+header_to_get)
+    logger.info("pelisalacarta.core.scrapertools get_header_from_response url="+url+", header_to_get="+header_to_get)
 
     if post is not None:
-        logger.info("streamondemand.core.scrapertools post="+post)
+        logger.info("pelisalacarta.core.scrapertools post="+post)
     else:
-        logger.info("streamondemand.core.scrapertools post=None")
+        logger.info("pelisalacarta.core.scrapertools post=None")
 
     #  Inicializa la librería de las cookies
     #ficherocookies = os.path.join( config.get_data_path(), 'cookies.dat' )
 
     dominio = urlparse.urlparse(url)[1].replace("www.", "")
     ficherocookies = os.path.join(COOKIES_PATH, dominio + ".dat" )
-    logger.info("streamondemand.core.scrapertools ficherocookies="+ficherocookies)
+    logger.info("pelisalacarta.core.scrapertools ficherocookies="+ficherocookies)
 
     cj = None
     ClientCookie = None
@@ -1128,13 +1139,13 @@ def get_header_from_response(url,header_to_get="",post=None,headers=DEFAULT_HEAD
     # that has useful load and save methods
 
     if os.path.isfile(ficherocookies):
-        logger.info("streamondemand.core.scrapertools Leyendo fichero cookies")
+        logger.info("pelisalacarta.core.scrapertools Leyendo fichero cookies")
         # if we have a cookie file already saved
         # then load the cookies into the Cookie Jar
         try:
             cj.load(ficherocookies)
         except:
-            logger.info("streamondemand.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
+            logger.info("pelisalacarta.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
             os.remove(ficherocookies)
 
     if header_to_get=="location":
@@ -1152,16 +1163,16 @@ def get_header_from_response(url,header_to_get="",post=None,headers=DEFAULT_HEAD
 
     # Traza la peticion
     if post is None:
-        logger.info("streamondemand.core.scrapertools petición GET")
+        logger.info("pelisalacarta.core.scrapertools petición GET")
     else:
-        logger.info("streamondemand.core.scrapertools petición POST")
+        logger.info("pelisalacarta.core.scrapertools petición POST")
 
     # Array de cabeceras
-    logger.info("streamondemand.core.scrapertools ---------------------------")
+    logger.info("pelisalacarta.core.scrapertools ---------------------------")
     for header in headers:
-        logger.info("streamondemand.core.scrapertools header=%s" % str(header[0]))
+        logger.info("pelisalacarta.core.scrapertools header=%s" % str(header[0]))
         txheaders[header[0]]=header[1]
-    logger.info("streamondemand.core.scrapertools ---------------------------")
+    logger.info("pelisalacarta.core.scrapertools ---------------------------")
 
     # Construye el request
     req = Request(url, post, txheaders)
@@ -1173,37 +1184,37 @@ def get_header_from_response(url,header_to_get="",post=None,headers=DEFAULT_HEAD
     # Lee los datos y cierra
     #data=handle.read()
     info = handle.info()
-    logger.info("streamondemand.core.scrapertools Respuesta")
-    logger.info("streamondemand.core.scrapertools ---------------------------")
+    logger.info("pelisalacarta.core.scrapertools Respuesta")
+    logger.info("pelisalacarta.core.scrapertools ---------------------------")
     location_header=""
     for header in info:
-        logger.info("streamondemand.core.scrapertools "+header+"="+info[header])
+        logger.info("pelisalacarta.core.scrapertools "+header+"="+info[header])
         if header==header_to_get:
             location_header=info[header]
     handle.close()
-    logger.info("streamondemand.core.scrapertools ---------------------------")
+    logger.info("pelisalacarta.core.scrapertools ---------------------------")
 
     # Tiempo transcurrido
     fin = time.clock()
-    logger.info("streamondemand.core.scrapertools Descargado en %d segundos " % (fin-inicio+1))
+    logger.info("pelisalacarta.core.scrapertools Descargado en %d segundos " % (fin-inicio+1))
 
     return location_header
 
 def get_headers_from_response(url,post=None,headers=DEFAULT_HEADERS):
     return_headers = []
-    logger.info("streamondemand.core.scrapertools get_headers_from_response url="+url)
+    logger.info("pelisalacarta.core.scrapertools get_headers_from_response url="+url)
 
     if post is not None:
-        logger.info("streamondemand.core.scrapertools post="+post)
+        logger.info("pelisalacarta.core.scrapertools post="+post)
     else:
-        logger.info("streamondemand.core.scrapertools post=None")
+        logger.info("pelisalacarta.core.scrapertools post=None")
 
     #  Inicializa la librería de las cookies
     #ficherocookies = os.path.join( config.get_data_path(), 'cookies.dat' )
 
     dominio = urlparse.urlparse(url)[1].replace("www.", "")
     ficherocookies = os.path.join(COOKIES_PATH, dominio + ".dat" )
-    logger.info("streamondemand.core.scrapertools ficherocookies="+ficherocookies)
+    logger.info("pelisalacarta.core.scrapertools ficherocookies="+ficherocookies)
 
     cj = None
     ClientCookie = None
@@ -1218,13 +1229,13 @@ def get_headers_from_response(url,post=None,headers=DEFAULT_HEADERS):
     # that has useful load and save methods
 
     if os.path.isfile(ficherocookies):
-        logger.info("streamondemand.core.scrapertools Leyendo fichero cookies")
+        logger.info("pelisalacarta.core.scrapertools Leyendo fichero cookies")
         # if we have a cookie file already saved
         # then load the cookies into the Cookie Jar
         try:
             cj.load(ficherocookies)
         except:
-            logger.info("streamondemand.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
+            logger.info("pelisalacarta.core.scrapertools El fichero de cookies existe pero es ilegible, se borra")
             os.remove(ficherocookies)
 
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj),NoRedirectHandler())
@@ -1238,16 +1249,16 @@ def get_headers_from_response(url,post=None,headers=DEFAULT_HEADERS):
 
     # Traza la peticion
     if post is None:
-        logger.info("streamondemand.core.scrapertools petición GET")
+        logger.info("pelisalacarta.core.scrapertools petición GET")
     else:
-        logger.info("streamondemand.core.scrapertools petición POST")
+        logger.info("pelisalacarta.core.scrapertools petición POST")
 
     # Array de cabeceras
-    if DEBUG_LEVEL: logger.info("streamondemand.core.scrapertools ---------------------------")
+    if DEBUG_LEVEL: logger.info("pelisalacarta.core.scrapertools ---------------------------")
     for header in headers:
-        if DEBUG_LEVEL: logger.info("streamondemand.core.scrapertools header=%s" % str(header[0]))
+        if DEBUG_LEVEL: logger.info("pelisalacarta.core.scrapertools header=%s" % str(header[0]))
         txheaders[header[0]]=header[1]
-    if DEBUG_LEVEL: logger.info("streamondemand.core.scrapertools ---------------------------")
+    if DEBUG_LEVEL: logger.info("pelisalacarta.core.scrapertools ---------------------------")
 
     # Construye el request
     req = Request(url, post, txheaders)
@@ -1259,18 +1270,18 @@ def get_headers_from_response(url,post=None,headers=DEFAULT_HEADERS):
     # Lee los datos y cierra
     #data=handle.read()
     info = handle.info()
-    if DEBUG_LEVEL: logger.info("streamondemand.core.scrapertools Respuesta")
-    if DEBUG_LEVEL: logger.info("streamondemand.core.scrapertools ---------------------------")
+    if DEBUG_LEVEL: logger.info("pelisalacarta.core.scrapertools Respuesta")
+    if DEBUG_LEVEL: logger.info("pelisalacarta.core.scrapertools ---------------------------")
     location_header=""
     for header in info:
-        if DEBUG_LEVEL: logger.info("streamondemand.core.scrapertools "+header+"="+info[header])
+        if DEBUG_LEVEL: logger.info("pelisalacarta.core.scrapertools "+header+"="+info[header])
         return_headers.append( [header,info[header]] )
     handle.close()
-    if DEBUG_LEVEL: logger.info("streamondemand.core.scrapertools ---------------------------")
+    if DEBUG_LEVEL: logger.info("pelisalacarta.core.scrapertools ---------------------------")
 
     # Tiempo transcurrido
     fin = time.clock()
-    logger.info("streamondemand.core.scrapertools Descargado en %d segundos " % (fin-inicio+1))
+    logger.info("pelisalacarta.core.scrapertools Descargado en %d segundos " % (fin-inicio+1))
 
     return return_headers
 
@@ -1323,16 +1334,38 @@ def get_domain_from_url(url):
 
     return filename
 
-# Parses the title of a tv show episode and returns the season id + episode id in format "1x01"
 def get_season_and_episode(title):
-    logger.info("get_season_and_episode('"+title+"')")
+    """
+    Retorna el numero de temporada y de episodio en formato "1x01" obtenido del titulo de un episodio
+    Ejemplos de diferentes valores para title y su valor devuelto:
+        "serie 101x1.strm", "s101e1.avi", "t101e1.avi"  -> '101x01'
+        "Name TvShow 1x6.avi" -> '1x06'
+        "Temp 3 episodio 2.avi" -> '3x02'
+        "Alcantara season 13 episodie 12.avi" -> '13x12'
+        "Temp1 capitulo 14" -> '1x14'
+        "Temporada 1: El origen Episodio 9" -> '' (entre el numero de temporada y los episodios no puede haber otro texto)
+        "Episodio 25: titulo episodio" -> '' (no existe el numero de temporada)
+        "Serie X Temporada 1" -> '' (no existe el numero del episodio)
+    @type title: str
+    @param title: titulo del episodio de una serie
+    @rtype: str
+    @return: Numero de temporada y episodio en formato "1x01" o cadena vacia si no se han encontrado
+    """
+    filename = ""
 
-    patron ="(\d+)[x|X](\d+)"
-    matches = re.compile(patron).findall(title)
-    logger.info(str(matches))
-    filename=matches[0][0]+"x"+matches[0][1]
+    patrons = ["(\d+)x(\d+)", "(?:s|t)(\d+)e(\d+)",
+               "(?:season|temp\w*)\s*(\d+)\s*(?:capitulo|epi\w*)\s*(\d+)"]
 
-    logger.info("get_season_and_episode('"+title+"') -> "+filename)
+    for patron in patrons:
+        try:
+            matches = re.compile(patron, re.I).search(title)
+            if matches:
+                filename = matches.group(1) + "x" + matches.group(2).zfill(2)
+                break
+        except:
+            pass
+
+    logger.info("'" + title + "' -> '" + filename + "'")
 
     return filename
 
@@ -1531,72 +1564,66 @@ def read_body_and_headers(url, post=None, headers=[], follow_redirects=False, ti
 
     return data,returnheaders
 
-def internet(host="8.8.8.8", port=53, timeout=3):
-    """
-   Host: 8.8.8.8 (google-public-dns-a.google.com)
-   OpenPort: 53/tcp
-   Service: domain (DNS/TCP)
-   """
+'''
+def anti_cloudflare(url, host="", headers=DEFAULT_HEADERS, post=None):
+    logger.info("anti_cloudflare url="+url+", host="+host+", headers="+repr(headers))
+
+    if host=="":
+        host = "http://"+get_domain_from_url(url)+"/"
+        logger.info("anti_cloudflare host="+host)
+
     try:
-        deftimeout = socket.getdefaulttimeout()
-        socket.setdefaulttimeout(timeout)
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
-        socket.setdefaulttimeout(deftimeout)
-        return True
-    except:
-        pass
-    return False
+        resp_headers = get_headers_from_response(url, headers=headers)
+        resp_headers = dict(resp_headers)
+    except urllib2.HTTPError, e:
+        resp_headers = e.headers
 
+    if 'refresh' in resp_headers:
+        time.sleep(int(resp_headers['refresh'][:1]))
+        get_headers_from_response(host + '/' + resp_headers['refresh'][7:], headers=headers)
 
-def wait_for_internet(wait=30, retry=5):
-    count = 0
-    while True:
-        if internet():
-            return True
-        count += 1
-        if count >= retry:
-            return False
-        time.sleep(wait)
+    return cache_page(url, headers=headers, post=post)
+'''
 
+def anti_cloudflare(url, host="", headers=DEFAULT_HEADERS, post=None, location=False):
+    logger.info("pelisalacarta.core.scrapertools anti_cloudflare url="+url+", host="+host+", headers="+repr(headers)+", post="+repr(post)+", location="+repr(location))
 
-def parseJSString(s):
+    if host=="":
+        host = "http://"+get_domain_from_url(url)+"/"
+        logger.info("pelisalacarta.core.scrapertools anti_cloudflare host="+host)
+
+    respuesta = ""
+
     try:
-        offset = 1 if s[0] == '+' else 0
-        val = int(eval(s.replace('!+[]', '1').replace('!![]', '1').replace('[]', '0').replace('(', 'str(')[offset:]))
-        return val
-    except:
-        pass
+        resp_headers = get_headers_from_response(url, headers=headers)
+        logger.info("pelisalacarta.core.scrapertools resp_headers="+repr(resp_headers))
+
+        resp_headers = dict(resp_headers)
+        logger.info("pelisalacarta.core.scrapertools resp_headers="+repr(resp_headers))
+
+        if resp_headers.has_key('location'): 
+            respuesta = resp_headers['location']
+
+    except urllib2.HTTPError, e:
+        import traceback
+        logger.info("pelisalacarta.core.scrapertools "+traceback.format_exc())
+
+        resp_headers = e.headers
+        logger.info("pelisalacarta.core.scrapertools error capturado, resp_headers="+repr(resp_headers))
+
+        resp_headers = dict(resp_headers)
+        logger.info("pelisalacarta.core.scrapertools error capturado, resp_headers="+repr(resp_headers))
 
 
-def anti_cloudflare(url, headers=DEFAULT_HEADERS):
-    result = cache_page(url, headers=headers)
-    try:
-        jschl = re.compile('name="jschl_vc" value="(.+?)"/>').findall(result)[0]
-        init = re.compile('setTimeout\(function\(\){\s*.*?.*:(.*?)};').findall(result)[0]
-        builder = re.compile(r"challenge-form\'\);\s*(.*)a.v").findall(result)[0]
-        decrypt_val = parseJSString(init)
-        lines = builder.split(';')
+    if 'refresh' in resp_headers:
+        time.sleep(int(resp_headers['refresh'][:1]))
 
-        for line in lines:
-            if len(line) > 0 and '=' in line:
-                sections = line.split('=')
-                line_val = parseJSString(sections[1])
-                decrypt_val = int(eval(str(decrypt_val) + sections[0][-1] + str(line_val)))
+        resp = get_headers_from_response(host + '/' + resp_headers['refresh'][7:], headers=headers)
+        resp_headers = dict(resp_headers)
+        if resp_headers.has_key('islocation'): 
+            respuesta = resp_headers['islocation']
 
-        urlsplit = urlparse.urlsplit(url)
-        h = urlsplit.netloc
-        s = urlsplit.scheme
-
-        answer = decrypt_val + len(h)
-
-        query = '%s/cdn-cgi/l/chk_jschl?jschl_vc=%s&jschl_answer=%s' % (url, jschl, answer)
-
-        if 'type="hidden" name="pass"' in result:
-            passval = re.compile('name="pass" value="(.*?)"').findall(result)[0]
-            query = '%s/cdn-cgi/l/chk_jschl?pass=%s&jschl_vc=%s&jschl_answer=%s' % (s + '://' + h, urllib.quote_plus(passval), jschl, answer)
-            time.sleep(5)
-
-        get_headers_from_response(query, headers=headers)
-        return cache_page(url, headers=headers)
-    except:
-        return result
+    if not location:
+        return cache_page(url, headers=headers, post=post)
+    else:
+        return respuesta

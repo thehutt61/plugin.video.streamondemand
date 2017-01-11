@@ -144,17 +144,19 @@ And now, my famous members
 --------------------------
 """
 
-import datetime
+from array import array
 import itertools
 import logging
 import math
+# http://www.python.org/doc/2.4.4/lib/module-operator.html
 import operator
+import datetime
+import time
 import struct
 import sys
-import time
-import warnings
 import zlib
-from array import array
+# http://www.python.org/doc/2.4.4/lib/module-warnings.html
+import warnings
 
 try:
     from functools import reduce

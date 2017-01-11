@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# streamondemand - XBMC Plugin
+# pelisalacarta - XBMC Plugin
 # Lib AADecode JS and scraper of the possible cases in the returns decoded.
 # File: /lib/aadecode.py
 # Use:
 #     from aadecode import decode as aadecode
 #     text_decode = aadecode(text_encode)
 # @robalo & @Cmos
-# http://www.mimediacenter.info/foro/viewforum.php?f=36
+# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
 # ------------------------------------------------------------
 
 import re

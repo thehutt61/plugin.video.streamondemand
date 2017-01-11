@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
 #------------------------------------------------------------
-# streamondemand
-# http://www.mimediacenter.info/foro/viewforum.php?f=36
+# pelisalacarta
+# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
 #------------------------------------------------------------

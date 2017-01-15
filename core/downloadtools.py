@@ -7,7 +7,7 @@
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# streamondemand 5 powered by pelisalacarta 4
 #
 # pelisalacarta 4 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -429,11 +429,11 @@ def limpia_nombre_excepto_2(s):
 
 def getfilefromtitle(url, title):
     # Imprime en el log lo que va a descartar
-    logger.info("pelisalacarta.core.downloadtools getfilefromtitle: title=" + title)
-    logger.info("pelisalacarta.core.downloadtools getfilefromtitle: url=" + url)
-    # logger.info("pelisalacarta.core.downloadtools downloadtitle: title="+urllib.quote_plus( title ))
+    logger.info("streamondemand.core.downloadtools getfilefromtitle: title=" + title)
+    logger.info("streamondemand.core.downloadtools getfilefromtitle: url=" + url)
+    # logger.info("streamondemand.core.downloadtools downloadtitle: title="+urllib.quote_plus( title ))
     plataforma = config.get_system_platform()
-    logger.info("pelisalacarta.core.downloadtools getfilefromtitle: plataforma=" + plataforma)
+    logger.info("streamondemand.core.downloadtools getfilefromtitle: plataforma=" + plataforma)
 
     # nombrefichero = xbmc.makeLegalFilename(title + url[-4:])
     import scrapertools
@@ -442,20 +442,20 @@ def getfilefromtitle(url, title):
         nombrefichero = limpia_nombre_excepto_1(nombrefichero)
     else:
         nombrefichero = title + scrapertools.get_filename_from_url(url)[-4:]
-        logger.info("pelisalacarta.core.downloadtools getfilefromtitle: nombrefichero=%s" % nombrefichero)
+        logger.info("streamondemand.core.downloadtools getfilefromtitle: nombrefichero=%s" % nombrefichero)
         if "videobb" in url or "videozer" in url or "putlocker" in url:
             nombrefichero = title + ".flv"
         if "videobam" in url:
             nombrefichero = title + "." + url.rsplit(".", 1)[1][0:3]
 
-        logger.info("pelisalacarta.core.downloadtools getfilefromtitle: nombrefichero=%s" % nombrefichero)
+        logger.info("streamondemand.core.downloadtools getfilefromtitle: nombrefichero=%s" % nombrefichero)
 
         nombrefichero = limpia_nombre_caracteres_especiales(nombrefichero)
 
-    logger.info("pelisalacarta.core.downloadtools getfilefromtitle: nombrefichero=%s" % nombrefichero)
+    logger.info("streamondemand.core.downloadtools getfilefromtitle: nombrefichero=%s" % nombrefichero)
 
     fullpath = os.path.join(config.get_setting("downloadpath"), nombrefichero)
-    logger.info("pelisalacarta.core.downloadtools getfilefromtitle: fullpath=%s" % fullpath)
+    logger.info("streamondemand.core.downloadtools getfilefromtitle: fullpath=%s" % fullpath)
 
     if config.is_xbmc() and fullpath.startswith("special://"):
         import xbmc
@@ -470,7 +470,7 @@ def downloadtitle(url, title):
 
 
 def downloadbest(video_urls, title, continuar=False):
-    logger.info("pelisalacarta.core.downloadtools downloadbest")
+    logger.info("streamondemand.core.downloadtools downloadbest")
 
     # Le da la vuelta, para poner el de más calidad primero ( list() es para que haga una copia )
     invertida = list(video_urls)
@@ -480,7 +480,7 @@ def downloadbest(video_urls, title, continuar=False):
         # videotitle = elemento[0]
         url = elemento[1]
         logger.info(
-            "pelisalacarta.core.downloadtools Descargando opción " + title + " " + url.encode('ascii', 'ignore'))
+            "streamondemand.core.downloadtools Descargando opción " + title + " " + url.encode('ascii', 'ignore'))
 
         # Calcula el fichero donde debe grabar
         try:
@@ -524,8 +524,8 @@ def downloadbest(video_urls, title, continuar=False):
 
 
 def downloadfile(url, nombrefichero, headers=None, silent=False, continuar=False):
-    logger.info("pelisalacarta.core.downloadtools downloadfile: url=" + url)
-    logger.info("pelisalacarta.core.downloadtools downloadfile: nombrefichero=" + nombrefichero)
+    logger.info("streamondemand.core.downloadtools downloadfile: url=" + url)
+    logger.info("streamondemand.core.downloadtools downloadfile: nombrefichero=" + nombrefichero)
 
     if headers is None:
         headers = []
@@ -547,7 +547,7 @@ def downloadfile(url, nombrefichero, headers=None, silent=False, continuar=False
             nombrefichero = xbmc.makeLegalFilename(nombrefichero)
         except:
             pass
-        logger.info("pelisalacarta.core.downloadtools downloadfile: nombrefichero=" + nombrefichero)
+        logger.info("streamondemand.core.downloadtools downloadfile: nombrefichero=" + nombrefichero)
 
         # El fichero existe y se quiere continuar
         if os.path.exists(nombrefichero) and continuar:
@@ -559,19 +559,19 @@ def downloadfile(url, nombrefichero, headers=None, silent=False, continuar=False
             f = open(nombrefichero, 'r+b')
             exist_size = os.path.getsize(nombrefichero)
 
-            logger.info("pelisalacarta.core.downloadtools downloadfile: el fichero existe, size=%d" % exist_size)
+            logger.info("streamondemand.core.downloadtools downloadfile: el fichero existe, size=%d" % exist_size)
             grabado = exist_size
             f.seek(exist_size)
 
         # el fichero ya existe y no se quiere continuar, se aborta
         elif os.path.exists(nombrefichero) and not continuar:
-            logger.info("pelisalacarta.core.downloadtools downloadfile: el fichero existe, no se descarga de nuevo")
+            logger.info("streamondemand.core.downloadtools downloadfile: el fichero existe, no se descarga de nuevo")
             return -3
 
         # el fichero no existe
         else:
             exist_size = 0
-            logger.info("pelisalacarta.core.downloadtools downloadfile: el fichero no existe")
+            logger.info("streamondemand.core.downloadtools downloadfile: el fichero no existe")
 
             # try:
             #    import xbmcvfs
@@ -596,13 +596,13 @@ def downloadfile(url, nombrefichero, headers=None, silent=False, continuar=False
                 additional_headers = [additional_headers]
 
             for additional_header in additional_headers:
-                logger.info("pelisalacarta.core.downloadtools additional_header: " + additional_header)
+                logger.info("streamondemand.core.downloadtools additional_header: " + additional_header)
                 name = re.findall("(.*?)=.*?", additional_header)[0]
                 value = urllib.unquote_plus(re.findall(".*?=(.*?)$", additional_header)[0])
                 headers.append([name, value])
 
             url = url.split("|")[0]
-            logger.info("pelisalacarta.core.downloadtools downloadfile: url=" + url)
+            logger.info("streamondemand.core.downloadtools downloadfile: url=" + url)
 
         # Timeout del socket a 60 segundos
         socket.setdefaulttimeout(60)
@@ -610,7 +610,7 @@ def downloadfile(url, nombrefichero, headers=None, silent=False, continuar=False
         h = urllib2.HTTPHandler(debuglevel=0)
         request = urllib2.Request(url)
         for header in headers:
-            logger.info("pelisalacarta.core.downloadtools Header=" + header[0] + ": " + header[1])
+            logger.info("streamondemand.core.downloadtools Header=" + header[0] + ": " + header[1])
             request.add_header(header[0], header[1])
 
         if exist_size > 0:
@@ -621,7 +621,7 @@ def downloadfile(url, nombrefichero, headers=None, silent=False, continuar=False
         try:
             connexion = opener.open(request)
         except urllib2.HTTPError, e:
-            logger.info("pelisalacarta.core.downloadtools downloadfile: error %d (%s) al abrir la url %s" %
+            logger.info("streamondemand.core.downloadtools downloadfile: error %d (%s) al abrir la url %s" %
                         (e.code, e.msg, url))
             # print e.code
             # print e.msg
@@ -802,18 +802,18 @@ def downloadfileRTMP(url,nombrefichero,silent):
 
 
 def downloadfileGzipped(url, pathfichero):
-    logger.info("pelisalacarta.core.downloadtools downloadfileGzipped: url=" + url)
+    logger.info("streamondemand.core.downloadtools downloadfileGzipped: url=" + url)
     nombrefichero = pathfichero
-    logger.info("pelisalacarta.core.downloadtools downloadfileGzipped: nombrefichero=" + nombrefichero)
+    logger.info("streamondemand.core.downloadtools downloadfileGzipped: nombrefichero=" + nombrefichero)
 
     import xbmc
     nombrefichero = xbmc.makeLegalFilename(nombrefichero)
-    logger.info("pelisalacarta.core.downloadtools downloadfileGzipped: nombrefichero=" + nombrefichero)
+    logger.info("streamondemand.core.downloadtools downloadfileGzipped: nombrefichero=" + nombrefichero)
     patron = "(http://[^/]+)/.+"
     matches = re.compile(patron, re.DOTALL).findall(url)
 
     if len(matches):
-        logger.info("pelisalacarta.core.downloadtools URL principal :" + matches[0])
+        logger.info("streamondemand.core.downloadtools URL principal :" + matches[0])
         url1 = matches[0]
     else:
         url1 = url
@@ -849,7 +849,7 @@ def downloadfileGzipped(url, pathfichero):
     try:
         connexion = opener.open(request)
     except urllib2.HTTPError, e:
-        logger.info("pelisalacarta.core.downloadtools downloadfile: error %d (%s) al abrir la url %s" %
+        logger.info("streamondemand.core.downloadtools downloadfile: error %d (%s) al abrir la url %s" %
                     (e.code, e.msg, url))
         # print e.code
         # print e.msg
@@ -882,7 +882,7 @@ def downloadfileGzipped(url, pathfichero):
     # despues
     f = open(nombrefichero, 'w')
 
-    logger.info("pelisalacarta.core.downloadtools downloadfileGzipped: fichero nuevo abierto")
+    logger.info("streamondemand.core.downloadtools downloadfileGzipped: fichero nuevo abierto")
 
     grabado = 0
     logger.info("Content-Length=%s" % totalfichero)
@@ -980,10 +980,10 @@ def downloadfileGzipped(url, pathfichero):
 
 def GetTitleFromFile(title):
     # Imprime en el log lo que va a descartar
-    logger.info("pelisalacarta.core.downloadtools GetTitleFromFile: titulo=" + title)
-    # logger.info("pelisalacarta.core.downloadtools downloadtitle: title="+urllib.quote_plus( title ))
+    logger.info("streamondemand.core.downloadtools GetTitleFromFile: titulo=" + title)
+    # logger.info("streamondemand.core.downloadtools downloadtitle: title="+urllib.quote_plus( title ))
     plataforma = config.get_system_platform()
-    logger.info("pelisalacarta.core.downloadtools GetTitleFromFile: plataforma=" + plataforma)
+    logger.info("streamondemand.core.downloadtools GetTitleFromFile: plataforma=" + plataforma)
 
     # nombrefichero = xbmc.makeLegalFilename(title + url[-4:])
     if plataforma == "xbox":
@@ -1002,7 +1002,7 @@ def sec_to_hms(seconds):
 
 def downloadIfNotModifiedSince(url, timestamp):
     logger.info(
-        "pelisalacarta.core.downloadtools downloadIfNotModifiedSince(" + url + "," + time.ctime(timestamp) + ")")
+        "streamondemand.core.downloadtools downloadIfNotModifiedSince(" + url + "," + time.ctime(timestamp) + ")")
 
     # Convierte la fecha a GMT
     fecha_formateada = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime(timestamp))
@@ -1047,7 +1047,7 @@ def downloadIfNotModifiedSince(url, timestamp):
 
 
 def download_all_episodes(item, channel, first_episode="", preferred_server="vidspot", filter_language=""):
-    logger.info("pelisalacarta.core.downloadtools download_all_episodes, show=" + item.show)
+    logger.info("streamondemand.core.downloadtools download_all_episodes, show=" + item.show)
     show_title = item.show
 
     # Obtiene el listado desde el que se llamó
@@ -1077,9 +1077,9 @@ def download_all_episodes(item, channel, first_episode="", preferred_server="vid
 
     for episode_item in episode_itemlist:
         try:
-            logger.info("pelisalacarta.core.downloadtools download_all_episodes, episode=" + episode_item.title)
+            logger.info("streamondemand.core.downloadtools download_all_episodes, episode=" + episode_item.title)
             episode_title = scrapertools.get_match(episode_item.title, "(\d+x\d+)")
-            logger.info("pelisalacarta.core.downloadtools download_all_episodes, episode=" + episode_title)
+            logger.info("streamondemand.core.downloadtools download_all_episodes, episode=" + episode_title)
         except:
             import traceback
             logger.info(traceback.format_exc())
@@ -1138,7 +1138,7 @@ def download_all_episodes(item, channel, first_episode="", preferred_server="vid
                             new_mirror_itemlist_4 + new_mirror_itemlist_5 + new_mirror_itemlist_6)
 
         for mirror_item in mirrors_itemlist:
-            logger.info("pelisalacarta.core.downloadtools download_all_episodes, mirror=" + mirror_item.title)
+            logger.info("streamondemand.core.downloadtools download_all_episodes, mirror=" + mirror_item.title)
 
             if "(Español)" in mirror_item.title:
                 idioma = "(Español)"
@@ -1156,12 +1156,12 @@ def download_all_episodes(item, channel, first_episode="", preferred_server="vid
                 idioma = "(Desconocido)"
                 codigo_idioma = "desconocido"
 
-            logger.info("pelisalacarta.core.downloadtools filter_language=#" + filter_language + "#, codigo_idioma=#" +
+            logger.info("streamondemand.core.downloadtools filter_language=#" + filter_language + "#, codigo_idioma=#" +
                         codigo_idioma + "#")
             if filter_language == "" or (filter_language != "" and filter_language == codigo_idioma):
-                logger.info("pelisalacarta.core.downloadtools download_all_episodes, downloading mirror")
+                logger.info("streamondemand.core.downloadtools download_all_episodes, downloading mirror")
             else:
-                logger.info("pelisalacarta.core.downloadtools language " + codigo_idioma + " filtered, skipping")
+                logger.info("streamondemand.core.downloadtools language " + codigo_idioma + " filtered, skipping")
                 continue
 
             if hasattr(channel, 'play'):
@@ -1180,14 +1180,14 @@ def download_all_episodes(item, channel, first_episode="", preferred_server="vid
 
                 # Lo añade a la lista de descargas
                 if puedes:
-                    logger.info("pelisalacarta.core.downloadtools download_all_episodes, downloading mirror started...")
+                    logger.info("streamondemand.core.downloadtools download_all_episodes, downloading mirror started...")
                     # El vídeo de más calidad es el último
                     # mediaurl = video_urls[len(video_urls) - 1][1]
                     devuelve = downloadbest(video_urls, show_title + " " + episode_title + " " + idioma +
                                             " [" + video_item.server + "]", continuar=False)
 
                     if devuelve == 0:
-                        logger.info("pelisalacarta.core.downloadtools download_all_episodes, download ok")
+                        logger.info("streamondemand.core.downloadtools download_all_episodes, download ok")
                         descargado = True
                         break
                     elif devuelve == -1:
@@ -1198,16 +1198,16 @@ def download_all_episodes(item, channel, first_episode="", preferred_server="vid
                             pass
                         return
                     else:
-                        logger.info("pelisalacarta.core.downloadtools download_all_episodes, download error, "
+                        logger.info("streamondemand.core.downloadtools download_all_episodes, download error, "
                                     "try another mirror")
                         continue
 
                 else:
-                    logger.info("pelisalacarta.core.downloadtools download_all_episodes, downloading mirror not "
+                    logger.info("streamondemand.core.downloadtools download_all_episodes, downloading mirror not "
                                 "available... trying next")
 
         if not descargado:
-            logger.info("pelisalacarta.core.downloadtools download_all_episodes, EPISODIO NO DESCARGADO " +
+            logger.info("streamondemand.core.downloadtools download_all_episodes, EPISODIO NO DESCARGADO " +
                         episode_title)
 
 

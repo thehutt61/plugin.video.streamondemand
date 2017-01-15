@@ -7,7 +7,7 @@
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# streamondemand 5 powered by pelisalacarta 4
 #
 # pelisalacarta 4 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import xbmc
 import xbmcaddon
 
 PLATFORM_NAME = "kodi-krypton"
-PLUGIN_NAME = "pelisalacarta"
+PLUGIN_NAME = "streamondemand"
 
 __settings__ = xbmcaddon.Addon(id="plugin.video." + PLUGIN_NAME)
 __language__ = __settings__.getLocalizedString

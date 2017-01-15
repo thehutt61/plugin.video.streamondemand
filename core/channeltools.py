@@ -7,7 +7,7 @@
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# streamondemand 5 powered by pelisalacarta 4
 #
 # pelisalacarta 4 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,10 +32,10 @@ import jsontools
 import logger
 import scrapertools
 
-DEFAULT_UPDATE_URL = "https://raw.githubusercontent.com/tvalacarta/pelisalacarta/develop/python/main-classic/channels/"
+DEFAULT_UPDATE_URL = "https://raw.githubusercontent.com/streamondemand/plugin.video.streamondemand/master/channels/"
 
 def is_adult(channel_name):
-    logger.info("pelisalacarta.core.channeltools is_adult channel_name="+channel_name)
+    logger.info("streamondemand.core.channeltools is_adult channel_name="+channel_name)
 
     channel_parameters = get_channel_parameters(channel_name)
 
@@ -43,7 +43,7 @@ def is_adult(channel_name):
 
 
 def get_channel_parameters(channel_name):
-    #logger.info("pelisalacarta.core.channeltools get_channel_parameters channel_name="+channel_name)
+    #logger.info("streamondemand.core.channeltools get_channel_parameters channel_name="+channel_name)
 
     channel_xml = os.path.join(config.get_runtime_path(), 'channels', channel_name+".xml")
 
@@ -288,8 +288,8 @@ def get_channel_remote_url(channel_name):
     remote_channel_url = channel_parameters["update_url"]+channel_name+".py"
     remote_version_url = channel_parameters["update_url"]+channel_name+".xml" 
 
-    logger.info("pelisalacarta.core.channeltools get_channel_remote_url remote_channel_url="+remote_channel_url)
-    logger.info("pelisalacarta.core.channeltools get_channel_remote_url remote_version_url="+remote_version_url)
+    logger.info("streamondemand.core.channeltools get_channel_remote_url remote_channel_url="+remote_channel_url)
+    logger.info("streamondemand.core.channeltools get_channel_remote_url remote_version_url="+remote_version_url)
     
     return remote_channel_url , remote_version_url
 
@@ -304,8 +304,8 @@ def get_channel_local_path(channel_name):
         local_version_path = os.path.join( config.get_runtime_path() , channel_name+".xml" )
         local_compiled_path = os.path.join( config.get_runtime_path() , channel_name+".pyo" )
 
-    logger.info("pelisalacarta.core.channeltools get_channel_local_path local_channel_path="+local_channel_path)
-    logger.info("pelisalacarta.core.channeltools get_channel_local_path local_version_path="+local_version_path)
-    logger.info("pelisalacarta.core.channeltools get_channel_local_path local_compiled_path="+local_compiled_path)
+    logger.info("streamondemand.core.channeltools get_channel_local_path local_channel_path="+local_channel_path)
+    logger.info("streamondemand.core.channeltools get_channel_local_path local_version_path="+local_version_path)
+    logger.info("streamondemand.core.channeltools get_channel_local_path local_compiled_path="+local_compiled_path)
     
     return local_channel_path , local_version_path , local_compiled_path

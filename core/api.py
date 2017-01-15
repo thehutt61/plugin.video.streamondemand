@@ -7,7 +7,7 @@
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 #------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# streamondemand 5 powered by pelisalacarta 4
 #
 # pelisalacarta 4 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -70,13 +70,13 @@ def remote_call(url,parameters={},require_session=True):
 # ---------------------------------------------------------------------------------------------------------
 
 def plugins_get_all_packages():
-    logger.info("pelisalacarta.core.api.plugins.get_all_packages")
+    logger.info("streamondemand.core.api.plugins.get_all_packages")
 
     parameters = { "plugin" : config.PLUGIN_NAME , "platform" : config.PLATFORM_NAME }
     return remote_call( "plugins/get_all_packages.php" , parameters )
 
 def plugins_get_latest_packages():
-    logger.info("pelisalacarta.core.api.plugins.get_latest_packages")
+    logger.info("streamondemand.core.api.plugins.get_latest_packages")
 
     parameters = { "plugin" : config.PLUGIN_NAME , "platform" : config.PLATFORM_NAME }
     return remote_call( "plugins/get_latest_packages.php" , parameters )

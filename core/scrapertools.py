@@ -1564,66 +1564,73 @@ def read_body_and_headers(url, post=None, headers=[], follow_redirects=False, ti
 
     return data,returnheaders
 
-'''
-def anti_cloudflare(url, host="", headers=DEFAULT_HEADERS, post=None):
-    logger.info("anti_cloudflare url="+url+", host="+host+", headers="+repr(headers))
 
-    if host=="":
-        host = "http://"+get_domain_from_url(url)+"/"
-        logger.info("anti_cloudflare host="+host)
-
+def internet(host="8.8.8.8", port=53, timeout=3):
+    """
+   Host: 8.8.8.8 (google-public-dns-a.google.com)
+   OpenPort: 53/tcp
+   Service: domain (DNS/TCP)
+   """
     try:
-        resp_headers = get_headers_from_response(url, headers=headers)
-        resp_headers = dict(resp_headers)
-    except urllib2.HTTPError, e:
-        resp_headers = e.headers
+        deftimeout = socket.getdefaulttimeout()
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        socket.setdefaulttimeout(deftimeout)
+        return True
+    except:
+        pass
+    return False
 
-    if 'refresh' in resp_headers:
-        time.sleep(int(resp_headers['refresh'][:1]))
-        get_headers_from_response(host + '/' + resp_headers['refresh'][7:], headers=headers)
 
-    return cache_page(url, headers=headers, post=post)
-'''
+def wait_for_internet(wait=30, retry=5):
+    count = 0
+    while True:
+        if internet():
+            return True
+        count += 1
+        if count >= retry:
+            return False
+        time.sleep(wait)
 
-def anti_cloudflare(url, host="", headers=DEFAULT_HEADERS, post=None, location=False):
-    logger.info("pelisalacarta.core.scrapertools anti_cloudflare url="+url+", host="+host+", headers="+repr(headers)+", post="+repr(post)+", location="+repr(location))
 
-    if host=="":
-        host = "http://"+get_domain_from_url(url)+"/"
-        logger.info("pelisalacarta.core.scrapertools anti_cloudflare host="+host)
-
-    respuesta = ""
-
+def parseJSString(s):
     try:
-        resp_headers = get_headers_from_response(url, headers=headers)
-        logger.info("pelisalacarta.core.scrapertools resp_headers="+repr(resp_headers))
-
-        resp_headers = dict(resp_headers)
-        logger.info("pelisalacarta.core.scrapertools resp_headers="+repr(resp_headers))
-
-        if resp_headers.has_key('location'): 
-            respuesta = resp_headers['location']
-
-    except urllib2.HTTPError, e:
-        import traceback
-        logger.info("pelisalacarta.core.scrapertools "+traceback.format_exc())
-
-        resp_headers = e.headers
-        logger.info("pelisalacarta.core.scrapertools error capturado, resp_headers="+repr(resp_headers))
-
-        resp_headers = dict(resp_headers)
-        logger.info("pelisalacarta.core.scrapertools error capturado, resp_headers="+repr(resp_headers))
+        offset = 1 if s[0] == '+' else 0
+        val = int(eval(s.replace('!+[]', '1').replace('!![]', '1').replace('[]', '0').replace('(', 'str(')[offset:]))
+        return val
+    except:
+        pass
 
 
-    if 'refresh' in resp_headers:
-        time.sleep(int(resp_headers['refresh'][:1]))
+def anti_cloudflare(url, headers=DEFAULT_HEADERS):
+    result = cache_page(url, headers=headers)
+    try:
+        jschl = re.compile('name="jschl_vc" value="(.+?)"/>').findall(result)[0]
+        init = re.compile('setTimeout\(function\(\){\s*.*?.*:(.*?)};').findall(result)[0]
+        builder = re.compile(r"challenge-form\'\);\s*(.*)a.v").findall(result)[0]
+        decrypt_val = parseJSString(init)
+        lines = builder.split(';')
 
-        resp = get_headers_from_response(host + '/' + resp_headers['refresh'][7:], headers=headers)
-        resp_headers = dict(resp_headers)
-        if resp_headers.has_key('islocation'): 
-            respuesta = resp_headers['islocation']
+        for line in lines:
+            if len(line) > 0 and '=' in line:
+                sections = line.split('=')
+                line_val = parseJSString(sections[1])
+                decrypt_val = int(eval(str(decrypt_val) + sections[0][-1] + str(line_val)))
 
-    if not location:
-        return cache_page(url, headers=headers, post=post)
-    else:
-        return respuesta
+        urlsplit = urlparse.urlsplit(url)
+        h = urlsplit.netloc
+        s = urlsplit.scheme
+
+        answer = decrypt_val + len(h)
+
+        query = '%s/cdn-cgi/l/chk_jschl?jschl_vc=%s&jschl_answer=%s' % (url, jschl, answer)
+
+        if 'type="hidden" name="pass"' in result:
+            passval = re.compile('name="pass" value="(.*?)"').findall(result)[0]
+            query = '%s/cdn-cgi/l/chk_jschl?pass=%s&jschl_vc=%s&jschl_answer=%s' % (s + '://' + h, urllib.quote_plus(passval), jschl, answer)
+            time.sleep(5)
+
+        get_headers_from_response(query, headers=headers)
+        return cache_page(url, headers=headers)
+    except:
+        return result

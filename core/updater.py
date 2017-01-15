@@ -111,7 +111,7 @@ def update(item):
     set_current_plugin_version(item.version)
 
 def download_and_install(remote_file_name,local_file_name):
-    logger.info("pelisalacarta.core.updater download_and_install from "+remote_file_name+" to "+local_file_name)
+    logger.info("streamondemand.core.updater download_and_install from "+remote_file_name+" to "+local_file_name)
 
     if os.path.exists(local_file_name):
         os.remove(local_file_name)
@@ -121,22 +121,22 @@ def download_and_install(remote_file_name,local_file_name):
     from core import downloadtools
     downloadtools.downloadfile(remote_file_name, local_file_name, continuar=False)
     fin = time.clock()
-    logger.info("pelisalacarta.core.updater Descargado en %d segundos " % (fin-inicio+1))
+    logger.info("streamondemand.core.updater Descargado en %d segundos " % (fin-inicio+1))
     
-    logger.info("pelisalacarta.core.updater descomprime fichero...")
+    logger.info("streamondemand.core.updater descomprime fichero...")
     import ziptools
     unzipper = ziptools.ziptools()
 
     # Lo descomprime en "addons" (un nivel por encima del plugin)
     installation_target = os.path.join(config.get_runtime_path(),"..")
-    logger.info("pelisalacarta.core.updater installation_target=%s" % installation_target)
+    logger.info("streamondemand.core.updater installation_target=%s" % installation_target)
 
     unzipper.extract(local_file_name,installation_target)
     
     # Borra el zip descargado
-    logger.info("pelisalacarta.core.updater borra fichero...")
+    logger.info("streamondemand.core.updater borra fichero...")
     os.remove(local_file_name)
-    logger.info("pelisalacarta.core.updater ...fichero borrado")
+    logger.info("streamondemand.core.updater ...fichero borrado")
 
 def update_channel(channel_name):
     logger.info("streamondemand.core.updater update_channel "+channel_name)
@@ -160,7 +160,7 @@ def update_channel(channel_name):
         infile = open( local_version_path )
         data = infile.read()
         infile.close();
-        #logger.info("pelisalacarta.core.updater local_data="+data)
+        #logger.info("streamondemand.core.updater local_data="+data)
 
         local_version = int( scrapertools.find_single_match(data,'<version>([^<]+)</version>') )
     else:

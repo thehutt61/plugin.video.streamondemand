@@ -1,26 +1,26 @@
 ﻿# -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta 4
+# streamondemand 5
 # Copyright 2015 tvalacarta@gmail.com
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# This file is part of streamondemand 5.
 #
-# pelisalacarta 4 is free software: you can redistribute it and/or modify
+# streamondemand 5 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pelisalacarta 4 is distributed in the hope that it will be useful,
+# streamondemand 5 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
+# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
 # --------------------------------------------------------------------------------
 # Server management
 #------------------------------------------------------------
@@ -34,7 +34,7 @@ from core import scrapertools
 
 # Funciónn genérica para encontrar ídeos en una página
 def find_video_items(item=None, data=None, channel=""):
-    logger.info("pelisalacarta.core.servertools find_video_items")
+    logger.info("streamondemand.core.servertools find_video_items")
 
     # Descarga la página
     if data is None:
@@ -64,54 +64,54 @@ def find_video_items(item=None, data=None, channel=""):
     return itemlist
 
 def guess_server_thumbnail(title):
-    logger.info("pelisalacarta.core.servertools guess_server_thumbnail title="+title)
+    logger.info("streamondemand.core.servertools guess_server_thumbnail title="+title)
 
     lowcase_title = title.lower()
 
     if "netu" in lowcase_title:
-        logger.info("pelisalacarta.core.servertools guess_server_thumbnail caso especial netutv")
+        logger.info("streamondemand.core.servertools guess_server_thumbnail caso especial netutv")
         return "http://media.tvalacarta.info/servers/server_netutv.png"
 
     if "ul.to" in lowcase_title:
-        logger.info("pelisalacarta.core.servertools guess_server_thumbnail caso especial ul.to")
+        logger.info("streamondemand.core.servertools guess_server_thumbnail caso especial ul.to")
         return "http://media.tvalacarta.info/servers/server_uploadedto.png"
 
     if "waaw" in lowcase_title:
-        logger.info("pelisalacarta.core.servertools guess_server_thumbnail caso especial waaw")
+        logger.info("streamondemand.core.servertools guess_server_thumbnail caso especial waaw")
         return "http://media.tvalacarta.info/servers/server_waaw.png"
 
     if "streamin" in lowcase_title:
-        logger.info("pelisalacarta.core.servertools guess_server_thumbnail caso especial streamin")
+        logger.info("streamondemand.core.servertools guess_server_thumbnail caso especial streamin")
         return "http://media.tvalacarta.info/servers/server_streaminto.png"
 
     servers = get_servers_list()
     for serverid in servers:
         if serverid in lowcase_title:
-            logger.info("pelisalacarta.core.servertools guess_server_thumbnail encontrado "+serverid)
+            logger.info("streamondemand.core.servertools guess_server_thumbnail encontrado "+serverid)
             return "http://media.tvalacarta.info/servers/server_"+serverid+".png"
 
     return ""
 
 def findvideosbyserver(data, serverid):
-    logger.info("pelisalacarta.core.servertools findvideosbyserver")
+    logger.info("streamondemand.core.servertools findvideosbyserver")
     encontrados = set()
     devuelve = []
     try:
         exec "from servers import "+serverid
         exec "devuelve.extend("+serverid+".find_videos(data))"
     except ImportError:
-        logger.info("No existe conector para #"+serverid+"#")
+        logger.info("Non esiste il connettore per #"+serverid+"#")
         #import traceback
         #logger.info(traceback.format_exc())
     except:
-        logger.info("Error en el conector #"+serverid+"#")
+        logger.info("Errore del connettore #"+serverid+"#")
         import traceback
         logger.info(traceback.format_exc())
 
     return devuelve
 
 def findvideos(data, skip=False):
-    logger.info("pelisalacarta.core.servertools findvideos") # en #"+data+"#")
+    logger.info("streamondemand.core.servertools findvideos") # en #"+data+"#")
     encontrados = set()
     devuelve = []
 
@@ -165,7 +165,7 @@ def get_server_from_url(url):
     return devuelve
 
 def resolve_video_urls_for_playing(server,url,video_password="",muestra_dialogo=False):
-    logger.info("pelisalacarta.core.servertools resolve_video_urls_for_playing, server="+server+", url="+url)
+    logger.info("streamondemand.core.servertools resolve_video_urls_for_playing, server="+server+", url="+url)
     video_urls = []
     torrent = False
 
@@ -173,7 +173,7 @@ def resolve_video_urls_for_playing(server,url,video_password="",muestra_dialogo=
 
     # Si el vídeo es "directo", no hay que buscar más
     if server=="directo" or server=="local":
-        logger.info("pelisalacarta.core.servertools server=directo, la url es la buena")
+        logger.info("streamondemand.core.servertools server=directo, la url es la buena")
 
         try:
             import urlparse
@@ -194,7 +194,7 @@ def resolve_video_urls_for_playing(server,url,video_password="",muestra_dialogo=
             # Muestra un diágo de progreso
             if muestra_dialogo:
                 from platformcode import platformtools
-                progreso = platformtools.dialog_progress( "pelisalacarta" , "Conectando con "+server)
+                progreso = platformtools.dialog_progress( "streamondemand" , "Connessione con "+server)
             server_parameters = get_server_parameters(server)
 
             #Cuenta las opciones disponibles, para calcular el porcentaje
@@ -202,47 +202,47 @@ def resolve_video_urls_for_playing(server,url,video_password="",muestra_dialogo=
             if server_parameters["free"] == "true":
               opciones.append("free")
             opciones.extend([premium for premium in server_parameters["premium"] if config.get_setting(premium+"premium")=="true"])
-            logger.info("pelisalacarta.core.servertools opciones disponibles para " + server + ": " + str(len(opciones)) + " "+str(opciones))
+            logger.info("streamondemand.core.servertools opciones disponibles para " + server + ": " + str(len(opciones)) + " "+str(opciones))
 
             # Sustituye el código por otro "Plex compatible"
             #exec "from servers import "+server+" as server_connector"
             servers_module = __import__("servers."+server)
             server_connector = getattr(servers_module,server)
 
-            logger.info("pelisalacarta.core.servertools servidor de "+server+" importado")
+            logger.info("streamondemand.core.servertools servidor de "+server+" importado")
 
             # Si tiene una función para ver si el vídeo existe, lo comprueba ahora
             if hasattr(server_connector, 'test_video_exists'):
-                logger.info("pelisalacarta.core.servertools invocando a "+server+".test_video_exists")
+                logger.info("streamondemand.core.servertools invocando a "+server+".test_video_exists")
                 puedes,motivo = server_connector.test_video_exists( page_url=url )
 
                 # Si la funcion dice que no existe, fin
                 if not puedes:
-                    logger.info("pelisalacarta.core.servertools test_video_exists dice que el video no existe")
+                    logger.info("streamondemand.core.servertools test_video_exists dice que el video no existe")
                     if muestra_dialogo: progreso.close()
                     return video_urls,puedes,motivo
                 else:
-                    logger.info("pelisalacarta.core.servertools test_video_exists dice que el video SI existe")
+                    logger.info("streamondemand.core.servertools test_video_exists dice que el video SI existe")
 
             # Obtiene enlaces free
             if server_parameters["free"]=="true":
                 if muestra_dialogo:
-                  progreso.update((100 / len(opciones)) * opciones.index("free")  , "Conectando con "+server)
+                  progreso.update((100 / len(opciones)) * opciones.index("free")  , "Connessione con "+server)
 
-                logger.info("pelisalacarta.core.servertools invocando a "+server+".get_video_url")
+                logger.info("streamondemand.core.servertools invocando a "+server+".get_video_url")
                 video_urls = server_connector.get_video_url( page_url=url , video_password=video_password )
 
                 # Si no se encuentran vídeos en modo free, es porque el vídeo no existe
                 if len(video_urls)==0:
                     if muestra_dialogo: progreso.close()
-                    return video_urls,False,"No se puede encontrar el vídeo en "+server
+                    return video_urls,False,"Non trovo il video su "+server
 
             # Obtiene enlaces para las diferentes opciones premium
             error_message = []
             for premium in server_parameters["premium"]:
               if config.get_setting(premium+"premium")=="true":
                 if muestra_dialogo:
-                  progreso.update((100 / len(opciones)) * opciones.index(premium)  , "Conectando con "+premium)
+                  progreso.update((100 / len(opciones)) * opciones.index(premium)  , "Connessione con "+premium)
                 exec "from servers import "+premium+" as premium_conector"
                 if premium == "realdebrid":
                     debrid_urls = premium_conector.get_video_url( page_url=url , premium=True , video_password=video_password )
@@ -263,7 +263,7 @@ def resolve_video_urls_for_playing(server,url,video_password="",muestra_dialogo=
                 return video_urls, False, " || ".join(error_message)
 
             if muestra_dialogo:
-                progreso.update( 100 , "Proceso finalizado")
+                progreso.update( 100 , "Processo terminato")
 
             # Cierra el diálogo de progreso
             if muestra_dialogo: progreso.close()
@@ -280,13 +280,13 @@ def resolve_video_urls_for_playing(server,url,video_password="",muestra_dialogo=
                 for premium in server_parameters["premium"]:
                   listapremium.append(get_server_parameters(premium)["name"])
 
-                return video_urls,False,"Para ver un vídeo en "+server+" necesitas<br/>una cuenta en "+" o ".join(listapremium)
+                return video_urls,False,"Per il video su "+server+" è necessario<br/>un account "+" o ".join(listapremium)
 
         except:
             if muestra_dialogo: progreso.close()
             import traceback
             logger.info(traceback.format_exc())
-            return video_urls,False,"Se ha producido un error en<br/>el conector con "+server
+            return video_urls,False,"Si è verificato un errore<br/>con il connettore "+server
 
     return video_urls,True,""
 
@@ -325,7 +325,7 @@ def get_server_parameters(server):
       return {}
 
 def get_servers_list():
-  logger.info("pelisalacarta.core.servertools get_servers_list")
+  logger.info("streamondemand.core.servertools get_servers_list")
   ServersPath = os.path.join(config.get_runtime_path(),"servers")
   ServerList={}
   for server in os.listdir(ServersPath):
@@ -340,9 +340,9 @@ def xml2dict(file = None, xmldata = None):
   import re, sys, os
   parse = globals().get(sys._getframe().f_code.co_name)
 
-  if xmldata == None and file == None:  raise Exception("No hay nada que convertir!")
+  if xmldata == None and file == None:  raise Exception("Non è possibile convertirlo!")
   if xmldata == None:
-    if not os.path.exists(file): raise Exception("El archivo no existe!")
+    if not os.path.exists(file): raise Exception("Il file non esiste!")
     xmldata = open(file, "rb").read()
 
   matches = re.compile("<(?P<tag>[^>]+)>[\n]*[\s]*[\t]*(?P<value>.*?)[\n]*[\s]*[\t]*<\/(?P=tag)\s*>",re.DOTALL).findall(xmldata)

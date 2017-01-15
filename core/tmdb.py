@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta 4
+# streamondemand 5
 # Copyright 2015 tvalacarta@gmail.com
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# This file is part of streamondemand 5.
 #
-# pelisalacarta 4 is free software: you can redistribute it and/or modify
+# streamondemand 5 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pelisalacarta 4 is distributed in the hope that it will be useful,
+# streamondemand 5 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
+# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
 # --------------------------------------------------------------------------------
 
 import copy
@@ -86,7 +86,7 @@ from core.item import InfoLabels
 otmdb_global = None
 
 
-def set_infoLabels(source, seekTmdb=True, idioma_busqueda='es'):
+def set_infoLabels(source, seekTmdb=True, idioma_busqueda='it'):
     """
     Dependiendo del tipo de dato de source obtiene y fija (item.infoLabels) los datos extras de una o varias series,
     capitulos o peliculas.
@@ -111,7 +111,7 @@ def set_infoLabels(source, seekTmdb=True, idioma_busqueda='es'):
     return ret
 
 
-def set_infoLabels_itemlist(item_list, seekTmdb=False, idioma_busqueda='es'):
+def set_infoLabels_itemlist(item_list, seekTmdb=False, idioma_busqueda='it'):
     """
     De manera concurrente, obtiene los datos de los items incluidos en la lista item_list.
 
@@ -164,7 +164,7 @@ def set_infoLabels_itemlist(item_list, seekTmdb=False, idioma_busqueda='es'):
     return [ii[2] for ii in r_list]
 
 
-def set_infoLabels_item(item, seekTmdb=True, idioma_busqueda='es', lock=None):
+def set_infoLabels_item(item, seekTmdb=True, idioma_busqueda='it', lock=None):
     # -----------------------------------------------------------------------------------------------------------
     # Obtiene y fija (item.infoLabels) los datos extras de una serie, capitulo o pelicula.
     #
@@ -414,7 +414,7 @@ class ResultDictDefault(dict):
 
 # ---------------------------------------------------------------------------------------------------------------
 # class Tmdb:
-#   Scraper para pelisalacarta basado en el Api de https://www.themoviedb.org/
+#   Scraper para streamondemand basado en el Api de https://www.themoviedb.org/
 #   version 1.4:
 #       - Documentada limitacion de uso de la API (ver mas abajo).
 #       - Añadido metodo get_temporada()
@@ -1421,3 +1421,36 @@ class Tmdb(object):
 
 
         return ret_infoLabels
+
+
+####################################################################################################
+#   for StreamOnDemand by costaplus
+# ====================================================================================================
+def infoSod(item, tipo="movie"):
+    '''
+    :param item:  item
+    :return:      ritorna un'item completo esente da errori di codice
+    '''
+    logger.info("streamondemand.core.tmdb infoSod")
+    logger.info("channel=[" + item.channel + "], action=[" + item.action + "], title[" + item.title + "], url=[" + item.url + "], thumbnail=[" + item.thumbnail + "], tipo=[" + tipo + "]")
+    try:
+        tmdbtitle = item.fulltitle.split("|")[0].split("{")[0].split("[")[0].split("(")[0].split("Sub-ITA")[0].split("Sub ITA")[0].split("20")[0].split("19")[0].split("S0")[0].split("Serie")[0].split("HD ")[0]
+        year = scrapertools.find_single_match(item.fulltitle, '\((\d{4})\)')
+
+        otmdb = Tmdb(texto_buscado=tmdbtitle,
+                     tipo=tipo,
+                     idioma_busqueda='it',
+                     year=year)
+
+        item.infoLabels = otmdb.get_infoLabels()
+        if 'thumbnail' in item.infoLabels:
+            item.thumbnail = item.infoLabels['thumbnail']
+        if 'fanart' in item.infoLabels:
+            item.fanart = item.infoLabels['fanart']
+
+    except:
+        pass
+    return item
+
+# ===================================================================================================
+

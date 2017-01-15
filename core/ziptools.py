@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta 4
+# streamondemand 5
 # Copyright 2015 tvalacarta@gmail.com
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# This file is part of streamondemand 5.
 #
-# pelisalacarta 4 is free software: you can redistribute it and/or modify
+# streamondemand 5 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pelisalacarta 4 is distributed in the hope that it will be useful,
+# streamondemand 5 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
+# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
 # --------------------------------------------------------------------------------
 # Zip Tools
 # --------------------------------------------------------------------------------
@@ -49,16 +49,18 @@ class ziptools:
         for name in zf.namelist():
             logger.info("name=%s" % name)
             if not name.endswith('/'):
+                content = zf.read(name)
+                name = name.replace('-master', '')
                 logger.info("no es un directorio")
                 try:
-                    (path,filename) = os.path.split(os.path.join(dir, name))
+                    (path, filename) = os.path.split(os.path.join(dir, name))
                     logger.info("path=%s" % path)
                     logger.info("name=%s" % name)
                     if folder_to_extract:
                         if path != os.path.join(dir, folder):
                             break
                     else:
-                        os.makedirs( path )
+                        os.makedirs(path)
                 except:
                     pass
                 if folder_to_extract:
@@ -70,9 +72,9 @@ class ziptools:
                 try:
                     if os.path.exists(outfilename) and overwrite_question:
                         from platformcode import platformtools
-                        dyesno = platformtools.dialog_yesno("El archivo ya existe",
-                                                            "El archivo %s a descomprimir ya existe" \
-                                                            ", ¿desea sobrescribirlo?" \
+                        dyesno = platformtools.dialog_yesno("Il file esiste già",
+                                                            "Il file %s esiste già" \
+                                                            ", vuoi sovrascrivere?" \
                                                             % os.path.basename(outfilename))
                         if not dyesno:
                             break
@@ -86,9 +88,9 @@ class ziptools:
                             shutil.copy2(outfilename, os.path.join(backup, os.path.basename(outfilename)))
                         
                     outfile = open(outfilename, 'wb')
-                    outfile.write(zf.read(name))
+                    outfile.write(content)
                 except:
-                    logger.info("Error en fichero "+name)
+                    logger.info("Error en fichero " + name)
 
     def _createstructure(self, file, dir):
         self._makedirs(self._listdirs(file), dir)
@@ -111,7 +113,7 @@ class ziptools:
         dirs = []
         for name in zf.namelist():
             if name.endswith('/'):
-                dirs.append(name)
+                dirs.append(name.replace('-master', ''))
 
         dirs.sort()
         return dirs

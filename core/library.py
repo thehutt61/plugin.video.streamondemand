@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta 4
+# streamondemand 5
 # Copyright 2015 tvalacarta@gmail.com
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# This file is part of streamondemand 5.
 #
-# pelisalacarta 4 is free software: you can redistribute it and/or modify
+# streamondemand 5 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pelisalacarta 4 is distributed in the hope that it will be useful,
+# streamondemand 5 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
+# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
 # ------------------------------------------------------------
 # Common Library Tools
 # ------------------------------------------------------------
@@ -42,26 +42,28 @@ FOLDER_MOVIES = "CINE"  # config.get_localized_string(30072)
 MOVIES_PATH = filetools.join(LIBRARY_PATH, FOLDER_MOVIES)
 FOLDER_TVSHOWS = "SERIES"  # config.get_localized_string(30073)
 TVSHOWS_PATH = filetools.join(LIBRARY_PATH, FOLDER_TVSHOWS)
-addon_name = "plugin://plugin.video.pelisalacarta/"
+addon_name = "plugin://plugin.video.streamondemand/"
 
 # TODO: mover todo esto a config.verify_directories_created()
 if not filetools.exists(LIBRARY_PATH):
     logger.info("Library path doesn't exist:" + LIBRARY_PATH)
     config.verify_directories_created()
-    
+
 if not filetools.exists(MOVIES_PATH):
     logger.info("Movies path doesn't exist:" + MOVIES_PATH)
-    if filetools.mkdir(MOVIES_PATH)and config.is_xbmc():
+    if filetools.mkdir(MOVIES_PATH) and config.is_xbmc():
         if config.is_xbmc():
-          from platformcode import xbmc_library
-          xbmc_library.establecer_contenido(FOLDER_MOVIES)
-        
+            from platformcode import xbmc_library
+
+            xbmc_library.establecer_contenido(FOLDER_MOVIES)
+
 if not filetools.exists(TVSHOWS_PATH):
     logger.info("Tvshows path doesn't exist:" + TVSHOWS_PATH)
     if filetools.mkdir(TVSHOWS_PATH) and config.is_xbmc():
         if config.is_xbmc():
-          from platformcode import xbmc_library
-          xbmc_library.establecer_contenido(FOLDER_TVSHOWS)
+            from platformcode import xbmc_library
+
+            xbmc_library.establecer_contenido(FOLDER_TVSHOWS)
 
 
 def read_nfo(path_nfo, item=None):
@@ -165,7 +167,7 @@ def save_library_movie(item):
     p_dialog = platformtools.dialog_progress('pelisalacarta', 'Añadiendo película...')
 
     base_name = filetools.validate_path(item.contentTitle).lower()
-    
+
     for raiz, subcarpetas, ficheros in filetools.walk(MOVIES_PATH):
         for c in subcarpetas:
             if c.endswith("[%s]" % _id):
@@ -179,15 +181,15 @@ def save_library_movie(item):
         if not filetools.mkdir(path):
             logger.debug("No se ha podido crear el directorio")
             return 0, 0, -1
-            
+
     nfo_path = filetools.join(path, "%s [%s].nfo" % (base_name, _id))
     strm_path = filetools.join(path, "%s.strm" % base_name)
     json_path = filetools.join(path, ("%s [%s].json" % (base_name, item.channel.lower())))
-    
+
     nfo_exists = filetools.exists(nfo_path)
     strm_exists = filetools.exists(strm_path)
     json_exists = filetools.exists(json_path)
-    
+
     if not nfo_exists:
         # Creamos .nfo si no existe
         logger.info("Creando .nfo: " + nfo_path)
@@ -214,7 +216,7 @@ def save_library_movie(item):
 
     # Solo si existen item_nfo y .strm continuamos
     if item_nfo and strm_exists:
-        
+
         if json_exists:
             logger.info("El fichero existe. Se sobreescribe")
             sobreescritos += 1
@@ -286,7 +288,7 @@ def save_library_tvshow(item, episodelist):
     else:
         base_name = item.contentSerieName
 
-    base_name = filetools.validate_path(base_name.replace('/','-')).lower()
+    base_name = filetools.validate_path(base_name.replace('/', '-')).lower()
 
     for raiz, subcarpetas, ficheros in filetools.walk(TVSHOWS_PATH):
         for c in subcarpetas:
@@ -389,23 +391,23 @@ def save_library_episodes(path, episodelist, serie, silent=False, overwrite=True
     sobreescritos = 0
     fallidos = 0
     news_in_playcounts = {}
-    
+
     # Listamos todos los ficheros de la serie, asi evitamos tener que comprobar si existe uno por uno
     raiz, carpetas_series, ficheros = filetools.walk(path).next()
     ficheros = [filetools.join(path, f) for f in ficheros]
-    
+
     # Silent es para no mostrar progreso (para library_service)
     if not silent:
         # progress dialog
-        p_dialog = platformtools.dialog_progress('pelisalacarta', 'Añadiendo episodios...')
-        p_dialog.update(0, 'Añadiendo episodio...')
+        p_dialog = platformtools.dialog_progress('streamondemand', 'Aggiunta episodi...')
+        p_dialog.update(0, 'Aggiunta episodio...')
 
     # fix float porque la division se hace mal en python 2.x
     t = float(100) / len(episodelist)
 
     for i, e in enumerate(episodelist):
         if not silent:
-            p_dialog.update(int(math.ceil((i + 1) * t)), 'Añadiendo episodio...', e.title)
+            p_dialog.update(int(math.ceil((i + 1) * t)), 'Aggiunta episodio...', e.title)
 
         try:
             season_episode = scrapertools.get_season_and_episode(e.title.lower())
@@ -419,11 +421,11 @@ def save_library_episodes(path, episodelist, serie, silent=False, overwrite=True
         strm_path = filetools.join(path, "%s.strm" % season_episode)
         nfo_path = filetools.join(path, "%s.nfo" % season_episode)
         json_path = filetools.join(path, ("%s [%s].json" % (season_episode, e.channel)).lower())
-        
+
         strm_exists = strm_path in ficheros
         nfo_exists = nfo_path in ficheros
         json_exists = json_path in ficheros
-        
+
         if not strm_exists:
             # Si no existe season_episode.strm añadirlo
             item_strm = Item(action='play_from_library', channel='biblioteca',
@@ -563,7 +565,7 @@ def add_pelicula_to_library(item):
                                 config.get_localized_string(30135))  # 'se ha añadido a la biblioteca'
     else:
         platformtools.dialog_ok(config.get_localized_string(30131),
-                                "ERROR, la pelicula NO se ha añadido a la biblioteca")
+                                "ERRORE, il film non è stato aggiunta alla libreria")
 
 
 def add_serie_to_library(item, channel=None):
@@ -621,8 +623,8 @@ def add_serie_to_library(item, channel=None):
             itemlist.remove(it)
 
     if not itemlist:
-        platformtools.dialog_ok("Biblioteca", "ERROR, la serie NO se ha añadido a la biblioteca",
-                                "No se ha podido obtener ningun episodio")
+        platformtools.dialog_ok("Libreria", "ERRORE, la serie non è stata aggiunta alla libreria",
+                                "Impossibile ottenere qualsiasi episodio")
         logger.error("La serie %s no se ha podido añadir a la biblioteca. No se ha podido obtener ningun episodio"
                      % item.show)
         return
@@ -630,13 +632,13 @@ def add_serie_to_library(item, channel=None):
     insertados, sobreescritos, fallidos = save_library_tvshow(item, itemlist)
 
     if fallidos == -1:
-        platformtools.dialog_ok("Biblioteca", "ERROR, la serie NO se ha añadido a la biblioteca")
+        platformtools.dialog_ok("Libreria", "ERRORE, la serie non è stata aggiunta alla libreria")
         logger.error("La serie %s no se ha podido añadir a la biblioteca" % item.show)
 
     elif fallidos > 0:
-        platformtools.dialog_ok("Biblioteca", "ERROR, la serie NO se ha añadido completa a la biblioteca")
+        platformtools.dialog_ok("Libreria", "ERRORE, la serie non è stata aggiunta completamente alla libreria")
         logger.error("No se han podido añadir %s episodios de la serie %s a la biblioteca" % (fallidos, item.show))
     else:
-        platformtools.dialog_ok("Biblioteca", "La serie se ha añadido a la biblioteca")
+        platformtools.dialog_ok("Libreria", "La serie è stata aggiunta alla libreria")
         logger.info("[launcher.py] Se han añadido %s episodios de la serie %s a la biblioteca" %
                     (insertados, item.show))

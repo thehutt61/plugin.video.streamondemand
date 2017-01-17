@@ -468,8 +468,8 @@ def update_serie(item):
     logger.info()
     #logger.debug("item:\n" + item.tostring('\n'))
 
-    heading = 'Actualizando serie....'
-    p_dialog = platformtools.dialog_progress_bg('pelisalacarta', heading)
+    heading = 'Aggiornamento serie....'
+    p_dialog = platformtools.dialog_progress_bg('streamondemand', heading)
     p_dialog.update(0, heading, item.contentSerieName)
 
     import library_service
@@ -601,13 +601,13 @@ def eliminar(item):
     #logger.debug(item.tostring('\n'))
 
     if item.contentType == 'movie':
-        heading = "Eliminar película"
+        heading = "Rimuovere film"
     else:
-        heading = "Eliminar serie"
+        heading = "Rimuovere serie"
 
     if item.multicanal:
         # Obtener listado de canales
-        opciones = ["Eliminar solo los enlaces de %s" % k.capitalize() for k in item.library_urls.keys() if k !="descargas"]
+        opciones = ["Rimuovere solo i link dei %s" % k.capitalize() for k in item.library_urls.keys() if k !="descargas"]
         opciones.insert(0, heading)
 
         index = platformtools.dialog_select(config.get_localized_string(30163), opciones)
@@ -618,7 +618,7 @@ def eliminar(item):
 
         elif index > 0:
             # Seleccionado Eliminar canal X
-            canal = opciones[index].replace("Eliminar solo los enlaces de ", "").lower()
+            canal = opciones[index].replace("Rimuovere solo i link dei ", "").lower()
 
             num_enlaces= 0
             for fd in filetools.listdir(item.path):
@@ -632,14 +632,14 @@ def eliminar(item):
                 del item_nfo.library_urls[canal]
                 filetools.write(item.nfo, head_nfo + item_nfo.tojson())
 
-            msg_txt = "Eliminados %s enlaces del canal %s" % (num_enlaces, canal)
+            msg_txt = "Cancellati %s collegamenti del canale %s" % (num_enlaces, canal)
             logger.info(msg_txt)
             platformtools.dialog_notification(heading, msg_txt)
             platformtools.itemlist_refresh()
 
     else:
         if platformtools.dialog_yesno(heading,
-                                      "¿Realmente desea eliminar '%s' de su biblioteca?" % item.infoLabels['title']):
+                                      "Vuoi davvero eliminare '%s' nella tua libreria?" % item.infoLabels['title']):
             eliminar_todo(item)
 
 

@@ -207,7 +207,7 @@ def menu(item):
         opciones.append(op[1])  # Eliminar de la lista
 
     # Mostramos el dialogo
-    seleccion = platformtools.dialog_select("Elige una opción", opciones)
+    seleccion = platformtools.dialog_select("Scegliere un'opzione", opciones)
 
     # -1 es cancelar
     if seleccion == -1: return
@@ -412,7 +412,7 @@ def download_from_url(url, item):
         filetools.mkdir(download_path)
 
     # Mostramos el progreso
-    progreso = platformtools.dialog_progress("Descargas", "Iniciando descarga...")
+    progreso = platformtools.dialog_progress("Download", "Avvio download...")
 
     # Lanzamos la descarga
     d = Downloader(url, download_path, file_name)
@@ -422,10 +422,10 @@ def download_from_url(url, item):
     while d.state == d.states.downloading and not progreso.iscanceled():
         time.sleep(0.1)
         line1 = "%s" % (filetools.decode(d.filename))
-        line2 = "%.2f%% - %.2f %s de %.2f %s a %.2f %s/s (%d/%d)" % (
+        line2 = "%.2f%% - %.2f %s di %.2f %s a %.2f %s/s (%d/%d)" % (
         d.progress, d.downloaded[1], d.downloaded[2], d.size[1], d.size[2], d.speed[1], d.speed[2], d.connections[0],
         d.connections[1])
-        line3 = "Tiempo restante: %s" % (d.remaining_time)
+        line3 = "tempo rimasto: %s" % (d.remaining_time)
         progreso.update(int(d.progress), line1, line2, line3)
 
     # Descarga detenida. Obtenemos el estado:
@@ -471,11 +471,11 @@ def download_from_url(url, item):
 def download_from_server(item):
     unsupported_servers = ["torrent"]
     
-    progreso = platformtools.dialog_progress("Descargas", "Probando con: %s" % item.server)        
+    progreso = platformtools.dialog_progress("Download", "Provando con: %s" % item.server)
     channel = __import__('channels.%s' % item.contentChannel, None, None, ["channels.%s" % item.contentChannel])
     if hasattr(channel, "play") and not item.play_menu:
 
-        progreso.update(50, "Probando con: %s" % item.server, "Conectando con %s..." % item.contentChannel)
+        progreso.update(50, "Provando con: %s" % item.server, "Connessione a %s..." % item.contentChannel)
         try:
           itemlist = getattr(channel, "play")(item.clone(channel=item.contentChannel, action=item.contentAction))
         except:
@@ -530,11 +530,11 @@ def download_from_best_server(item, ask = False):
     logger.info("contentAction: %s | contentChannel: %s | url: %s" % (item.contentAction, item.contentChannel, item.url))
     result =  {"downloadStatus": STATUS_CODES.error}
 
-    progreso = platformtools.dialog_progress("Descargas", "Obteniendo lista de servidores disponibles...")
+    progreso = platformtools.dialog_progress("Download", "Recupero l'elenco dei server disponibili...")
 
     channel = __import__('channels.%s' % item.contentChannel, None, None, ["channels.%s" % item.contentChannel])
     
-    progreso.update(50, "Obteniendo lista de servidores disponibles.", "Conectando con %s..." % item.contentChannel)
+    progreso.update(50, "Recupero l'elenco dei server disponibili.", "Connessione a %s..." % item.contentChannel)
     if hasattr(channel, item.contentAction):
         play_items = getattr(channel, item.contentAction)(item.clone(action = item.contentAction, channel = item.contentChannel))
     else:
@@ -542,7 +542,7 @@ def download_from_best_server(item, ask = False):
    
     play_items = filter(lambda x: x.action == "play", play_items)
 
-    progreso.update(100, "Obteniendo lista de servidores disponibles.", "Servidores disponibles: %s" % len(play_items), "Identificando servidores...")
+    progreso.update(100, "Recupero l'elenco dei server disponibili.", "Server disponibili: %s" % len(play_items), "Identifico i server...")
     
     for i in play_items:
       if not i.server:
@@ -573,7 +573,7 @@ def download_from_best_server(item, ask = False):
           if result["downloadStatus"] in [STATUS_CODES.canceled, STATUS_CODES.completed]:
               break
     else:
-      seleccion = platformtools.dialog_select("Selecciona el servidor", [s.title for s in play_items])
+      seleccion = platformtools.dialog_select("Selezionare il server", [s.title for s in play_items])
       if seleccion > -1:
         play_item = item.clone(**play_items[seleccion].__dict__)
         play_item.contentAction = play_item.action
@@ -711,7 +711,7 @@ def save_download(item):
 
 def save_download_video(item):
     logger.info("contentAction: %s | contentChannel: %s | contentTitle: %s" % (item.contentAction, item.contentChannel, item.contentTitle))
-    progreso = platformtools.dialog_progress("Descargas", "Añadiendo video...")
+    progreso = platformtools.dialog_progress("Download", "Aggiungo il video...")
 
     
     if not item.contentTitle:
@@ -736,7 +736,7 @@ def save_download_video(item):
 def save_download_movie(item):
     logger.info("contentAction: %s | contentChannel: %s | contentTitle: %s" % (item.contentAction, item.contentChannel, item.contentTitle))
 
-    progreso = platformtools.dialog_progress("Descargas", "Obteniendo datos de la pelicula")
+    progreso = platformtools.dialog_progress("Download", "Recupero del film")
 
     result = scraper.find_and_set_infoLabels(item)
     if not result:
@@ -744,7 +744,7 @@ def save_download_movie(item):
       item.contentType = "video"
       return save_download_video(item)
 
-    progreso.update(0, "Añadiendo pelicula...")
+    progreso.update(0, "Aggiunta del film...")
 
     item.downloadFilename = filetools.validate_path("%s [%s]" % (item.contentTitle.strip(), item.contentChannel))
 
@@ -762,17 +762,17 @@ def save_download_movie(item):
 def save_download_tvshow(item):
     logger.info("contentAction: %s | contentChannel: %s | contentType: %s | contentSerieName: %s" % (item.contentAction, item.contentChannel, item.contentType, item.contentSerieName))
     
-    progreso = platformtools.dialog_progress("Descargas", "Obteniendo datos de la serie")
+    progreso = platformtools.dialog_progress("Download", "Recupero della serie")
     
     scraper.find_and_set_infoLabels(item)
     
     item.downloadFilename = filetools.validate_path("%s [%s]" % (item.contentSerieName, item.contentChannel))
     
-    progreso.update(0, "Obteniendo episodios...", "conectando con %s..." % item.contentChannel)
+    progreso.update(0, "Recupero episodi...", "connessione a %s..." % item.contentChannel)
 
     episodes = get_episodes(item)
 
-    progreso.update(0, "Añadiendo capitulos...", " ")
+    progreso.update(0, "Aggiunta capitoli...", " ")
 
     for x, i in enumerate(episodes):
         progreso.update(x * 100 / len(episodes), "%dx%0.2d: %s" % (i.contentSeason, i.contentEpisodeNumber, i.contentTitle))
@@ -781,7 +781,7 @@ def save_download_tvshow(item):
 
     if not platformtools.dialog_yesno(config.get_localized_string(30101), "Avviare il download adesso?"):
         platformtools.dialog_ok(config.get_localized_string(30101),
-                                str(len(episodes)) + " capitulos de: " + item.contentSerieName,
+                                str(len(episodes)) + " capitoli di: " + item.contentSerieName,
                                 config.get_localized_string(30109))
     else:
         for i in episodes:

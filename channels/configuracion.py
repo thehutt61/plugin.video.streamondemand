@@ -121,7 +121,8 @@ def get_all_versions(item):
     api_response = api.plugins_get_all_packages()
 
     if api_response["error"]:
-        platformtools.dialog_ok("Error", "Se ha producido un error al descargar la lista de versiones")
+        from platformcode import platformtools
+        platformtools.dialog_ok("Errore", "C'è stato un errore scaricando l'elenco delle versioni")
         return
 
     for entry in api_response["body"]:
@@ -163,16 +164,16 @@ def download_and_install_package(item):
 
     if item.package=="plugin":
         if int(item.version)<updater.get_current_plugin_version():
-            if not platformtools.dialog_yesno("Instalando versión anterior","¿Seguro que quieres instalar una versión anterior?"):
+            if not platformtools.dialog_yesno("Installazione versione precedente","Sei sicuro di voler installare una versione precedente?"):
                 return
         elif int(item.version)==updater.get_current_plugin_version():
-            if not platformtools.dialog_yesno("Reinstalando versión actual","¿Seguro que quieres reinstalar la misma versión que ya tienes?"):
+            if not platformtools.dialog_yesno("Reinstallare versione attuale","Sei sicuro di voler reinstallare la stessa versione già presente?"):
                 return
         elif int(item.version)>updater.get_current_plugin_version():
-            if not platformtools.dialog_yesno("Instalando nueva versión","¿Seguro que quieres instalar esta nueva versión?"):
+            if not platformtools.dialog_yesno("Installazione nuova versione","Sei sicuro di voler installare questa nuova versione?"):
                 return
     else:
-        if not platformtools.dialog_yesno("Instalando paquete","¿Seguro que quieres instalar este paquete?"):
+        if not platformtools.dialog_yesno("Pacchetto di installazione","Sei sicuro di voler installare questo pacchetto?"):
             return
 
     local_file_name = os.path.join( config.get_data_path() , item.filename)
@@ -214,7 +215,7 @@ def addchannel(item):
     import time
     logger.info()
     
-    tecleado = platformtools.dialog_input("", "Introduzca la URL")
+    tecleado = platformtools.dialog_input("", "Inserire l'URL")
     if not tecleado:
         return
     logger.info("url=%s" % tecleado)
@@ -257,7 +258,7 @@ def addchannel(item):
             except:
                 import traceback
                 logger.info("Detalle del error: %s" % traceback.format_exc())
-                platformtools.dialog_ok("Error", "La url no es correcta o no está disponible")
+                platformtools.dialog_ok("Errore", "L'URL non è corretto o non disponibile")
                 return
         else:
             filename = 'new%s.zip' % info_accion
@@ -270,19 +271,19 @@ def addchannel(item):
     
     try:
         if len(files) > 1:
-            lista_opciones = ["No", "Sí", "Sí (Sobrescribir todos)"]
+            lista_opciones = ["No", "Si", "Si (Sovrascrivere tutto)"]
             overwrite_all = False
         from core import downloadtools
         for url, localfilename, filename in files:
             result = downloadtools.downloadfile(url, localfilename, continuar=False)
             if result == -3:
                 if len(files) == 1:
-                    dyesno = platformtools.dialog_yesno("El archivo ya existe", "Ya existe el %s %s. "
-                                                                                "¿Desea sobrescribirlo?" %
+                    dyesno = platformtools.dialog_yesno("Il file esiste già", "%s %s esiste già. "
+                                                                                "Vuoi sovrascrivere?" %
                                                         (info_accion, filename))
                 else:
                     if not overwrite_all:
-                        dyesno = platformtools.dialog_select("El archivo %s ya existe, ¿desea sobrescribirlo?"
+                        dyesno = platformtools.dialog_select("Il file %s esiste già, vuoi sovrascrivere?"
                                                              % filename, lista_opciones)
                     else:
                         dyesno = 1
@@ -293,7 +294,7 @@ def addchannel(item):
                 elif dyesno == 2:
                     overwrite_all = True
                 elif dyesno:
-                    hora_folder = "Copia seguridad [%s]" % time.strftime("%d-%m_%H-%M", time.localtime())
+                    hora_folder = "Backup [%s]" % time.strftime("%d-%m_%H-%M", time.localtime())
                     backup = filetools.join(config.get_data_path(), 'backups', hora_folder, folder_to_extract)
                     if not filetools.exists(backup):
                         os.makedirs(backup)
@@ -323,7 +324,7 @@ def addchannel(item):
             logger.error("Detalle del error: %s" % traceback.format_exc())
             # Borra el zip descargado
             filetools.remove(localfilename)
-            platformtools.dialog_ok("Error", "Se ha producido un error extrayendo el archivo")
+            platformtools.dialog_ok("Errore", "C'è stato un errore nell'estrazione del file")
             return
 
         # Borra el zip descargado
@@ -331,7 +332,7 @@ def addchannel(item):
         filetools.remove(localfilename)
         logger.info("...fichero borrado")
 
-    platformtools.dialog_ok("Éxito", "Actualización/Instalación realizada correctamente")
+    platformtools.dialog_ok("Successo", "Aggiornamento/installazione eseguita correttamente")
 
 
 def backups(item):
@@ -352,9 +353,9 @@ def backups(item):
         platformtools.dialog_ok(heading, ruta, ruta_split, folders)
     else:
         if not filetools.exists(ruta):
-            platformtools.dialog_ok("La carpeta no existe", "No hay copias de seguridad guardadas")
+            platformtools.dialog_ok("La cartella non esiste", "Nessun backup salvato")
         else:
-            dyesno = platformtools.dialog_yesno("Las copias de seguridad se eliminarán", "¿Está seguro?")
+            dyesno = platformtools.dialog_yesno("I backup vengono cancellati", "Sei sicuro?")
             if dyesno:
                 import shutil
                 shutil.rmtree(ruta, ignore_errors=True)

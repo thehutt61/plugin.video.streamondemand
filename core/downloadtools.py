@@ -762,7 +762,7 @@ def downloadfileRTMP(url,nombrefichero,silent):
 
   if not os.path.isfile(rtmpdump_cmd) and not silent:
     from platformcode import platformtools
-    advertencia = platformtools.dialog_ok( "Falta " + rtmpdump_cmd, "Comprueba que rtmpdump está instalado")
+    advertencia = platformtools.dialog_ok( "Manca " + rtmpdump_cmd, "Verificare che sia installato rtmpdump")
     return True
 
   valid_rtmpdump_options = ["help", "url", "rtmp", "host", "port", "socks", "protocol", "playpath", "playlist", "swfUrl", "tcUrl", "pageUrl", "app", "swfhash", "swfsize", "swfVfy", "swfAge", "auth", "conn", "flashVer", "live", "subscribe", "realtime", "flv", "resume", "timeout", "start", "stop", "token", "jtv", "hashes", "buffer", "skip", "quiet", "verbose", "debug"]   # for rtmpdump 2.4
@@ -790,7 +790,7 @@ def downloadfileRTMP(url,nombrefichero,silent):
     rtmpdump_exit = spawnv(P_NOWAIT, rtmpdump_cmd, rtmpdump_args)
     if not silent:
       from platformcode import platformtools
-      advertencia = platformtools.dialog_ok( "La opción de descarga RTMP es experimental", "y el vídeo se descargará en segundo plano.", "No se mostrará ninguna barra de progreso.")
+      advertencia = platformtools.dialog_ok( "L'opzione download RTMP è sperimentale", "e il video verrà scaricato in background.", "Non verrà visualizzata alcuna barra di avanzamento.")
   except:
       return True
 

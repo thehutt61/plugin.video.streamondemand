@@ -34,6 +34,9 @@ import config
 
 class ziptools:
 
+    def __init__(self):
+        pass
+
     def extract(self, file, dir, folder_to_extract="", overwrite_question=False, backup=False):
         logger.info("file=%s" % file)
         logger.info("dir=%s" % dir)
@@ -57,17 +60,18 @@ class ziptools:
                     logger.info("path=%s" % path)
                     logger.info("name=%s" % name)
                     if folder_to_extract:
-                        if path != os.path.join(dir, folder):
+                        if path != os.path.join(dir, folder_to_extract):
                             break
                     else:
                         os.makedirs(path)
                 except:
                     pass
+
                 if folder_to_extract:
                     outfilename = os.path.join(dir, filename)
-                    
                 else:
                     outfilename = os.path.join(dir, name)
+
                 logger.info("outfilename=%s" % outfilename)
                 try:
                     if os.path.exists(outfilename) and overwrite_question:

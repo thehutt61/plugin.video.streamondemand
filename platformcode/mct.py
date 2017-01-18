@@ -1,28 +1,28 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta 4
+# streamondemand 5
 # Copyright 2015 tvalacarta@gmail.com
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# This file is part of streamondemand 5.
 #
-# pelisalacarta 4 is free software: you can redistribute it and/or modify
+# streamondemand 5 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pelisalacarta 4 is distributed in the hope that it will be useful,
+# streamondemand 5 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
+# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
 # ------------------------------------------------------------
-# MCT - Mini Cliente Torrent para pelisalacarta
+# MCT - Mini Cliente Torrent para streamondemand
 #------------------------------------------------------------
 
 import os
@@ -79,7 +79,7 @@ def play(url, xlistitem={}, is_view=None, subtitle=""):
             url = decode_adfly(data)
         except:
             ddd = xbmcgui.Dialog()
-            ddd.ok( "pelisalacarta-MCT: Sin soporte adf.ly", "El script no tiene soporte para el acortador de urls adf.ly.", "", "url: " + url )
+            ddd.ok( "streamondemand-MCT: Senza supporto adf.ly", "Lo script non supporta gli URL adf.ly shortener.", "", "url: " + url )
             return
 
     # -- Necesario para algunas webs ----------------------------
@@ -181,9 +181,9 @@ def play(url, xlistitem={}, is_view=None, subtitle=""):
         }
         h = lt.add_magnet_uri(ses, torrent_file, params)
         dp = xbmcgui.DialogProgress()
-        dp.create('pelisalacarta-MCT')
+        dp.create('streamondemand-MCT')
         while not h.has_metadata():
-            message, porcent, msg_file, s, download = getProgress(h, "Creando torrent desde magnet")
+            message, porcent, msg_file, s, download = getProgress(h, "Creating torrent from magnet")
             dp.update(porcent, message, msg_file)
             if s.state == 1: download = 1
             if dp.iscanceled():
@@ -218,7 +218,7 @@ def play(url, xlistitem={}, is_view=None, subtitle=""):
     # -- Prioritarizar/Seleccionar archivo-----------------------
     _index, video_file, video_size, len_files = get_video_files_sizes( info )
     if len_files == 0:
-        dp = xbmcgui.Dialog().ok("No se puede reproducir", "El torrent no contiene ningún archivo de vídeo")
+        dp = xbmcgui.Dialog().ok("Impossibile riprodurre", "Il file torrent non contiene il video")
 
     if _index == -1:
         _index = _index_file
@@ -268,7 +268,7 @@ def play(url, xlistitem={}, is_view=None, subtitle=""):
 
     # -- Crear diálogo de progreso para el primer bucle ---------
     dp = xbmcgui.DialogProgress()
-    dp.create('pelisalacarta-MCT')
+    dp.create('streamondemand-MCT')
 
     _pieces_info = {}
 
@@ -398,7 +398,7 @@ def play(url, xlistitem={}, is_view=None, subtitle=""):
                     # -- Crear diálogo si no existe -------------
                     if not player.statusDialogoProgress:
                         dp = xbmcgui.DialogProgress()
-                        dp.create('pelisalacarta-MCT')
+                        dp.create('streamondemand-MCT')
                         player.setDialogoProgress()
 
                     # -- Diálogos de estado en el visionado -----
@@ -407,7 +407,7 @@ def play(url, xlistitem={}, is_view=None, subtitle=""):
                         message, porcent, msg_file, s, download = getProgress(h, video_file, _pf=_pieces_info)
                         dp.update(porcent, message, msg_file)
                     else:
-                        dp.update(100, "Descarga completa: " + video_file)
+                        dp.update(100, "Download completo: " + video_file)
 
                     # -- Se canceló el progreso en el visionado -
                     # -- Continuar                              -
@@ -445,7 +445,7 @@ def play(url, xlistitem={}, is_view=None, subtitle=""):
             if info.num_files() == 1:
                 # -- Diálogo continuar o terminar ---------------
                 d = xbmcgui.Dialog()
-                ok = d.yesno('pelisalacarta-MCT', 'XBMC-Kodi Cerró el vídeo.', '¿Continuar con la sesión?')
+                ok = d.yesno('streamondemand-MCT', 'Kodi ha chiuso il video.', 'Continuare con la sessione?')
             else: ok = False
             # -- SI ---------------------------------------------
             if ok:
@@ -466,7 +466,7 @@ def play(url, xlistitem={}, is_view=None, subtitle=""):
                                                     porcent4first_pieces, porcent4last_pieces, allocate)
                     is_view=None
                     dp = xbmcgui.DialogProgress()
-                    dp.create('pelisalacarta-MCT')
+                    dp.create('streamondemand-MCT')
 
         # -- Mostar progeso antes del visionado -----------------
         if is_view != "Ok" :
@@ -489,7 +489,7 @@ def play(url, xlistitem={}, is_view=None, subtitle=""):
                                                 porcent4first_pieces, porcent4last_pieces, allocate)
                 is_view=None
                 dp = xbmcgui.DialogProgress()
-                dp.create('pelisalacarta-MCT')
+                dp.create('streamondemand-MCT')
 
     # -- Kodi - Error? - No debería llegar aquí -----------------
     if is_view == "Ok" and not xbmc.Player().isPlaying():
@@ -610,7 +610,7 @@ def get_video_files_sizes( info ):
 
     if len(opciones) > 1:
         d = xbmcgui.Dialog()
-        seleccion = d.select("pelisalacarta-MCT: Lista de vídeos", opciones.values())
+        seleccion = d.select("streamondemand-MCT: Lista dei vídeo", opciones.values())
     else: seleccion = 0
 
     index = opciones.keys()[seleccion]
@@ -638,7 +638,7 @@ def remove_files( download, torrent_file, video_file, ses, h ):
 
     if dialog_view:
         d = xbmcgui.Dialog()
-        ok = d.yesno('pelisalacarta-MCT', 'Borrar las descargas del video', video_file)
+        ok = d.yesno('streamondemand-MCT', 'Annullare il download', video_file)
 
         # -- SI -------------------------------------------------
         if ok:

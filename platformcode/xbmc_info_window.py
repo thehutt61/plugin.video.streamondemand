@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta 4
+# streamondemand 5
 # Copyright 2015 tvalacarta@gmail.com
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# This file is part of streamondemand 5.
 #
-# pelisalacarta 4 is free software: you can redistribute it and/or modify
+# streamondemand 5 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pelisalacarta 4 is distributed in the hope that it will be useful,
+# streamondemand 5 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
+# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
 # ------------------------------------------------------------
 
 import re
@@ -253,7 +253,7 @@ class InfoWindow(xbmcgui.WindowXMLDialog):
         #
         # logger.debug(str(self.result))
 
-    def Start(self, data, caption="Información del vídeo", item=None, scraper=Tmdb):
+    def Start(self, data, caption="Informazioni su ", item=None, scraper=Tmdb):
         # Capturamos los parametros
         self.caption = caption
         self.item = item
@@ -312,31 +312,31 @@ class InfoWindow(xbmcgui.WindowXMLDialog):
         else:
             self.getControl(10006).setLabel("Serie:")
             self.getControl(10007).setLabel(self.result.get("title", "N/A"))
-            self.getControl(10008).setLabel("Idioma original:")
+            self.getControl(10008).setLabel("Lingua Originale:")
             self.getControl(10009).setLabel(self.result.get("language", "N/A"))
-            self.getControl(100010).setLabel("Puntuación:")
-            self.getControl(100011).setLabel(self.result.get("puntuacion", "N/A"))
-            self.getControl(100012).setLabel("Géneros:")
+            self.getControl(100010).setLabel("Punteggio:")
+            self.getControl(100011).setLabel(self.result.get("rating", "N/A"))
+            self.getControl(100012).setLabel("Genere:")
             self.getControl(100013).setLabel(self.result.get("genre", "N/A"))
 
             if self.result.get("season"):
-                self.getControl(100014).setLabel("Título temporada:")
+                self.getControl(100014).setLabel("Titolo:")
                 self.getControl(100015).setLabel(self.result.get("temporada_nombre", "N/A"))
-                self.getControl(100016).setLabel("Temporada:")
+                self.getControl(100016).setLabel("Stagione:")
                 self.getControl(100017).setLabel(self.result.get("season", "N/A") + " de " +
                                                  self.result.get("seasons", "N/A"))
             if self.result.get("episode"):
-                self.getControl(100014).setLabel("Título:")
+                self.getControl(100014).setLabel("Titolo:")
                 self.getControl(100015).setLabel(self.result.get("episode_title", "N/A"))
                 self.getControl(100018).setLabel("Episodio:")
                 self.getControl(100019).setLabel(self.result.get("episode", "N/A") + " de " +
                                                  self.result.get("episodes", "N/A"))
-                self.getControl(100020).setLabel("Emisión:")
+                self.getControl(100020).setLabel("Uscito:")
                 self.getControl(100021).setLabel(self.result.get("date", "N/A"))
 
         # Sinopsis
         if self.result['plot']:
-            self.getControl(100022).setLabel("Sinopsis:")
+            self.getControl(100022).setLabel("Sinossi:")
             self.getControl(100023).setText(self.result.get("plot", "N/A"))
         else:
             self.getControl(100022).setLabel("")

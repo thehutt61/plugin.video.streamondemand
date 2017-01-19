@@ -120,7 +120,7 @@ def render_items(itemlist, parent_item):
 
     # Si no hay ningun item, mostramos un aviso
     if not len(itemlist):
-        itemlist.append(Item(title="No hay elementos que mostrar"))
+        itemlist.append(Item(title="Non ci sono elementi da visualizzare"))
 
     # Recorremos el itemlist
     for item in itemlist:
@@ -720,13 +720,13 @@ def get_dialogo_opciones(item, default_action, strm):
     else:
         if item.server != "":
             if "<br/>" in motivo:
-                dialog_ok("No puedes ver ese vídeo porque...", motivo.split("<br/>")[0], motivo.split("<br/>")[1],
+                dialog_ok("Non è possibile visualizzare questo video perché...", motivo.split("<br/>")[0], motivo.split("<br/>")[1],
                           item.url)
             else:
-                dialog_ok("No puedes ver ese vídeo porque...", motivo, item.url)
+                dialog_ok("Non è possibile visualizzare questo video perché...", motivo, item.url)
         else:
-            dialog_ok("No puedes ver ese vídeo porque...", "El servidor donde está alojado no está",
-                      "soportado en pelisalacarta todavía", item.url)
+            dialog_ok("Non è possibile visualizzare questo video perché...", "Il server che lo ospita non è",
+                      "ancora supportato da streamondemand", item.url)
 
         if item.channel == "favoritos":
             # "Quitar de favoritos"
@@ -826,7 +826,7 @@ def get_video_seleccionado(item, seleccion, video_urls):
         view = True
 
     # Si no hay mediaurl es porque el vídeo no está :)
-    logger.info("pelisalacarta.platformcode.platformstools mediaurl=" + mediaurl)
+    logger.info("streamondemand.platformcode.platformstools mediaurl=" + mediaurl)
     if mediaurl == "":
         if item.server == "unknown":
             alert_unsopported_server()
@@ -875,19 +875,19 @@ def set_player(item, xlistitem, mediaurl, view, strm):
 
             # Reproduce
             playersettings = config.get_setting('player_type')
-            logger.info("pelisalacarta.platformcode.platformstools playersettings=" + playersettings)
+            logger.info("streamondemand.platformcode.platformstools playersettings=" + playersettings)
 
             if config.get_system_platform() == "xbox":
                 player_type = xbmc.PLAYER_CORE_AUTO
                 if playersettings == "0":
                     player_type = xbmc.PLAYER_CORE_AUTO
-                    logger.info("pelisalacarta.platformcode.platformstools PLAYER_CORE_AUTO")
+                    logger.info("streamondemand.platformcode.platformstools PLAYER_CORE_AUTO")
                 elif playersettings == "1":
                     player_type = xbmc.PLAYER_CORE_MPLAYER
-                    logger.info("pelisalacarta.platformcode.platformstools PLAYER_CORE_MPLAYER")
+                    logger.info("streamondemand.platformcode.platformstools PLAYER_CORE_MPLAYER")
                 elif playersettings == "2":
                     player_type = xbmc.PLAYER_CORE_DVDPLAYER
-                    logger.info("pelisalacarta.platformcode.platformstools PLAYER_CORE_DVDPLAYER")
+                    logger.info("streamondemand.platformcode.platformstools PLAYER_CORE_DVDPLAYER")
 
                 xbmc_player = xbmc.Player(player_type)
             else:
@@ -933,7 +933,7 @@ def play_torrent(item, xlistitem, mediaurl):
         torrent_options.append(["Plugin externo: torrentin", "plugin://plugin.video.torrentin/?uri=%s&image="])
 
     if len(torrent_options) > 1:
-        seleccion = dialog_select("Abrir torrent con...", [opcion[0] for opcion in torrent_options])
+        seleccion = dialog_select("Apri torrent con...", [opcion[0] for opcion in torrent_options])
     else:
         seleccion = 0
 
@@ -960,7 +960,7 @@ def play_torrent(item, xlistitem, mediaurl):
                    temp_path=os.path.join(config.get_data_path(), "torrent"), print_status=debug)
 
         # Mostramos el progreso
-        progreso = dialog_progress("Pelisalacarta - Torrent", "Iniciando...")
+        progreso = dialog_progress("Streamondemand - Torrent", "Avvio...")
 
         # Mientras el progreso no sea cancelado ni el cliente cerrado
         while not c.closed:
@@ -981,7 +981,7 @@ def play_torrent(item, xlistitem, mediaurl):
                         (s.progress_file, s.file_size, s.str_state, s._download_rate)
                   txt2 = 'S: %d(%d) P: %d(%d)' % (s.num_seeds, s.num_complete, s.num_peers, s.num_incomplete)
                   try:
-                    txt3 = 'Deteniendo automaticamente en: %ss' % (int(s.timeout))   
+                    txt3 = 'Arresto automatico in: %ss' % (int(s.timeout))
                   except:
                     txt3 = ''
 
@@ -991,21 +991,21 @@ def play_torrent(item, xlistitem, mediaurl):
                 if progreso.iscanceled():
                   progreso.close()
                   if s.buffer == 100:
-                    if dialog_yesno("Pelisalacarta - Torrent", "¿Deseas iniciar la reproduccion?"):
+                    if dialog_yesno("Streamondemand - Torrent", "Vuoi avviare la riproduzione?"):
                       played = False
-                      progreso = dialog_progress("Pelisalacarta - Torrent", "")
+                      progreso = dialog_progress("Streamondemand - Torrent", "")
                       progreso.update(s.buffer, txt, txt2, txt3)
                     else:
-                      progreso = dialog_progress("Pelisalacarta - Torrent", "")
+                      progreso = dialog_progress("Streamondemand - Torrent", "")
                       break
                       
                   else:
-                    if dialog_yesno("Pelisalacarta - Torrent", "¿Deseas cancelar el proceso?"):
-                      progreso = dialog_progress("Pelisalacarta - Torrent", "")
+                    if dialog_yesno("Streamondemand - Torrent", "Vuoi annullare?"):
+                      progreso = dialog_progress("Streamondemand - Torrent", "")
                       break
                       
                     else:
-                      progreso = dialog_progress("Pelisalacarta - Torrent", "")
+                      progreso = dialog_progress("Streamondemand - Torrent", "")
                       progreso.update(s.buffer, txt, txt2, txt3)
 
                    
@@ -1033,7 +1033,7 @@ def play_torrent(item, xlistitem, mediaurl):
                         time.sleep(1)
 
                     # Cuando este cerrado,  Volvemos a mostrar el dialogo
-                    progreso = dialog_progress("Pelisalacarta - Torrent", "")
+                    progreso = dialog_progress("Streamondemand - Torrent", "")
                     progreso.update(s.buffer, txt, txt2, txt3)
 
             except:
@@ -1042,7 +1042,7 @@ def play_torrent(item, xlistitem, mediaurl):
                 break
             
 
-        progreso.update(100, "Terminando y eliminando datos", " ", " ")
+        progreso.update(100, "Completamento e cancellazione dei dati", " ", " ")
 
         # Detenemos el cliente
         if not c.closed:

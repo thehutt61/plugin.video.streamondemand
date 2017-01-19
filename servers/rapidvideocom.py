@@ -2,7 +2,7 @@
 # ------------------------------------------------------------
 # pelisalacarta - XBMC Plugin
 # Conector para rapidvideo
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 # ------------------------------------------------------------
 import random
 import re

@@ -202,7 +202,7 @@ def get_newest(channel_name, categoria):
         if not puede:
             return
 
-        logger.info("pelisalacarta.channels.novedades running channel "+modulo.__name__+" "+modulo.__file__)
+        logger.info("streamondemand.channels.novedades running channel "+modulo.__name__+" "+modulo.__file__)
         list_result = modulo.newest(categoria)
         logger.info("streamondemand.channels.novedades.get_newest canal= %s %d resultados" %(channel_name, len(list_result)))
 

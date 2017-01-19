@@ -49,7 +49,7 @@ TITLE_TVSHOW = "[COLOR %s][%i%%][/COLOR] %s [%s]"
 
 
 def mainlist(item):
-    logger.info("pelisalacarta.channels.descargas mainlist")
+    logger.info("streamondemand.channels.descargas mainlist")
     itemlist = []
     # Lista de archivos
     for file in sorted(filetools.listdir(DOWNLOAD_LIST_PATH)):
@@ -694,7 +694,7 @@ def get_episodes(item):
 
 
 def write_json(item):
-    logger.info("pelisalacarta.channels.descargas write_json")
+    logger.info("streamondemand.channels.descargas write_json")
 
     item.action = "menu"
     item.channel = "descargas"
@@ -717,7 +717,7 @@ def write_json(item):
 
 
 def save_download(item):
-    logger.info("pelisalacarta.channels.descargas save_download")
+    logger.info("streamondemand.channels.descargas save_download")
     # Menu contextual
     if item.from_action and item.from_channel:
         item.channel = item.from_channel

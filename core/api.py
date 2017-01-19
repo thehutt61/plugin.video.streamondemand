@@ -1,26 +1,26 @@
-#------------------------------------------------------------
+# ------------------------------------------------------------
 # -*- coding: utf-8 -*-
-#------------------------------------------------------------
-# pelisalacarta 4
+# ------------------------------------------------------------
+# streamondemand 5
 # Copyright 2016 tvalacarta@gmail.com
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
-#------------------------------------------------------------
-# streamondemand 5 powered by pelisalacarta 4
+# ------------------------------------------------------------
+# This file is part of streamondemand 5.
 #
-# pelisalacarta 4 is free software: you can redistribute it and/or modify
+# streamondemand 5 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pelisalacarta 4 is distributed in the hope that it will be useful,
+# streamondemand 5 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
+# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
 #------------------------------------------------------------
 # Client for api.tvalacarta.info
 #------------------------------------------------------------
@@ -46,7 +46,7 @@ DEFAULT_HEADERS = [ ["User-Agent",config.PLUGIN_NAME+" "+config.PLATFORM_NAME] ]
 
 # Make a remote call using post, ensuring api key is here
 def remote_call(url,parameters={},require_session=True):
-    logger.info("pelisalacarta.core.api.remote_call url="+url+", parameters="+repr(parameters))
+    logger.info("streamondemand.core.api.remote_call url="+url+", parameters="+repr(parameters))
 
     if not url.startswith("http"):
         url = MAIN_URL + "/" + url

@@ -2,7 +2,7 @@
 # ------------------------------------------------------------
 # streamondemand 5
 # Copyright 2015 tvalacarta@gmail.com
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
@@ -574,7 +574,7 @@ def remove_tags(title):
     @rtype: str
     @return: cadena sin tags
     """
-    logger.info("pelisalacarta.core.filetools remove_tags")
+    logger.info("streamondemand.core.filetools remove_tags")
 
     title_without_tags = scrapertools.find_single_match(title, '\[color .+?\](.+)\[\/color\]')
 

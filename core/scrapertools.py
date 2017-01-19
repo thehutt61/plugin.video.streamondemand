@@ -334,8 +334,8 @@ def downloadpage(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, ti
     return data
 
 def downloadpageWithResult(url,post=None,headers=DEFAULT_HEADERS,follow_redirects=True, timeout=DEFAULT_TIMEOUT, header_to_get=None):
-    logger.info("pelisalacarta.core.scrapertools downloadpageWithResult")
-    logger.info("pelisalacarta.core.scrapertools url="+url)
+    logger.info("streamondemand.core.scrapertools downloadpageWithResult")
+    logger.info("streamondemand.core.scrapertools url="+url)
 
     if post is not None:
         logger.info("streamondemand.core.scrapertools post="+post)

@@ -128,7 +128,7 @@ def get_all_versions(item):
     for entry in api_response["body"]:
 
         if entry["package"]=="plugin":
-            title = "pelisalacarta "+entry["tag"]+" (Publicada "+entry["date"]+")"
+            title = "streamondemand "+entry["tag"]+" (Publicada "+entry["date"]+")"
             local_version_number = updater.get_current_plugin_version()
         elif entry["package"]=="channels":
             title = "Canales (Publicada "+entry["date"]+")"

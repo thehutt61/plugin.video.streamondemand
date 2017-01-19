@@ -81,8 +81,8 @@ def buscartrailer(item, trailers=[]):
         
         item.year = item.infoLabels['year']
 
-        logger.info("pelisalacarta.channels.trailertools Búsqueda: %s" % item.contentTitle)
-        logger.info("pelisalacarta.channels.trailertools Año: %s" % item.year)
+        logger.info("streamondemand.channels.trailertools Búsqueda: %s" % item.contentTitle)
+        logger.info("streamondemand.channels.trailertools Año: %s" % item.year)
         if item.infoLabels['trailer'] and not trailers:
             url = item.infoLabels['trailer']
             if "youtube" in url:

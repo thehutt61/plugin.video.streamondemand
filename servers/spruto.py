@@ -13,7 +13,7 @@ from core import scrapertools
 
 
 def test_video_exists(page_url):
-    logger.info("pelisalacarta.servers.spruto test_video_exists(page_url='%s')" % page_url)
+    logger.info("streamondemand.servers.spruto test_video_exists(page_url='%s')" % page_url)
 
     data = scrapertools.cache_page(page_url)
     if "404.txt" in data:

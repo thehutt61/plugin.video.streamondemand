@@ -164,7 +164,7 @@ def save_library_movie(item):
     _id = item.infoLabels['code']
 
     # progress dialog
-    p_dialog = platformtools.dialog_progress('pelisalacarta', 'Añadiendo película...')
+    p_dialog = platformtools.dialog_progress('streamondemand', 'Aggiunta film...')
 
     base_name = filetools.validate_path(item.contentTitle).lower()
 

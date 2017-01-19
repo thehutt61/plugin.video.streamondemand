@@ -98,7 +98,7 @@ def save_favourites(favourites_list):
 
 
 def addFavourite(item):
-    logger.info("pelisalacarta.core.favoritos addFavourite")
+    logger.info("streamondemand.core.favoritos addFavourite")
     #logger.debug(item.tostring('\n'))
 
     # Si se llega aqui mediante el menu contextual, hay que recuperar los parametros action y channel
@@ -118,7 +118,7 @@ def addFavourite(item):
 
 
 def delFavourite(item):
-    logger.info("pelisalacarta.core.favoritos delFavourite")
+    logger.info("streamondemand.core.favoritos delFavourite")
     #logger.debug(item.tostring('\n'))
 
     if item.from_title:
@@ -137,7 +137,7 @@ def delFavourite(item):
 
 
 def renameFavourite(item):
-    logger.info("pelisalacarta.core.favoritos renameFavourite")
+    logger.info("streamondemand.core.favoritos renameFavourite")
     #logger.debug(item.tostring('\n'))
 
     #Buscar el item q queremos renombrar en favourites.xml
@@ -240,7 +240,7 @@ def check_bookmark(readpath):
     if itemlist:
         favourites_list = read_favourites()
         for item in itemlist:
-            data = "ActivateWindow(10025,&quot;plugin://plugin.video.pelisalacarta/?" + item.tourl() + "&quot;,return)"
+            data = "ActivateWindow(10025,&quot;plugin://plugin.video.streamondemand/?" + item.tourl() + "&quot;,return)"
             favourites_list.append((item.title, item.thumbnail, data))
         if save_favourites(favourites_list):
             logger.debug("Conversion de txt a xml correcta")

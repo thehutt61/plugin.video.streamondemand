@@ -16,7 +16,7 @@ host = "http://powvideo.net/"
 
 
 def test_video_exists(page_url):
-    logger.info("pelisalacarta.servers.powvideo test_video_exists(page_url='%s')" % page_url)
+    logger.info("streamondemand.servers.powvideo test_video_exists(page_url='%s')" % page_url)
     
     data = scrapertools.cache_page(page_url)
     if "<title>watch </title>" in data.lower():

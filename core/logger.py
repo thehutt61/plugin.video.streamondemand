@@ -61,16 +61,16 @@ def get_caller(message=None):
 
     # En boxee en ocasiones no detecta el modulo, de este modo lo hacemos manual
     if module is None:
-        module = ".".join(os.path.splitext(inspect.currentframe().f_back.f_back.f_code.co_filename.split("pelisalacarta")[1])[0].split(os.path.sep))[1:]
+        module = ".".join(os.path.splitext(inspect.currentframe().f_back.f_back.f_code.co_filename.split("streamondemand")[1])[0].split(os.path.sep))[1:]
     else:
         module = module.__name__
 
     function = inspect.currentframe().f_back.f_back.f_code.co_name
 
     if module == "__main__":
-        module = "pelisalacarta"
+        module = "streamondemand"
     else:
-        module = "pelisalacarta." + module
+        module = "streamondemand." + module
     if message:
         if module not in message:
             if function == "<module>":

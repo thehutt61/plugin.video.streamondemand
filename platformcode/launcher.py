@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta 4
+# streamondemand 5
 # Copyright 2015 tvalacarta@gmail.com
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
-# This file is part of pelisalacarta 4.
+# This file is part of streamondemand 5.
 #
-# pelisalacarta 4 is free software: you can redistribute it and/or modify
+# streamondemand 5 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pelisalacarta 4 is distributed in the hope that it will be useful,
+# streamondemand 5 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
+# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
 # ------------------------------------------------------------
 # XBMC Launcher (xbmc / kodi / boxee)
 # ------------------------------------------------------------
@@ -44,13 +44,13 @@ def start():
     Dentro de esta funcion deberian ir todas las llamadas a las
     funciones que deseamos que se ejecuten nada mas abrir el plugin.
     """
-    logger.info("pelisalacarta.platformcode.launcher start")
+    logger.info("streamondemand.platformcode.launcher start")
 
     # Test if all the required directories are created
     config.verify_directories_created()
 
 def run():
-    logger.info("pelisalacarta.platformcode.launcher run")
+    logger.info("streamondemand.platformcode.launcher run")
 
     # Extract item from sys.argv
     if sys.argv[2]:
@@ -60,13 +60,13 @@ def run():
     else:
         item = Item(channel="channelselector", action="getmainlist", viewmode="movie")
 
-    logger.info("pelisalacarta.platformcode.launcher "+item.tostring())
+    logger.info("streamondemand.platformcode.launcher "+item.tostring())
     
     try:
 
         # If item has no action, stops here
         if item.action == "":
-            logger.info("pelisalacarta.platformcode.launcher Item sin accion")
+            logger.info("streamondemand.platformcode.launcher Item sin accion")
             return
 
         # Action for main menu in channelselector
@@ -75,7 +75,7 @@ def run():
 
             # Check for updates only on first screen
             if config.get_setting("check_for_plugin_updates") == "true":
-                logger.info("pelisalacarta.platformcode.launcher Check for plugin updates enabled")
+                logger.info("streamondemand.platformcode.launcher Check for plugin updates enabled")
                 from core import updater
                 
                 try:
@@ -86,24 +86,24 @@ def run():
                     if version:
                         config.set_setting("plugin_updates_available","1")
 
-                        platformtools.dialog_ok("Versión "+version+" disponible",
-                                                "Ya puedes descargar la nueva versión del plugin\n"
-                                                "desde el listado principal")
+                        platformtools.dialog_ok("Versione "+version+" disponible",
+                                                "E' possibile fare il download della nuova versione\n"
+                                                "selezionare la relativa voce nel menu principale")
 
                         itemlist = channelselector.getmainlist()
-                        itemlist.insert(0, Item(title="Descargar version "+version, version=version, channel="updater",
+                        itemlist.insert(0, Item(title="Download versione "+version, version=version, channel="updater",
                                                 action="update", thumbnail=channelselector.get_thumb("squares","thumb_actualizar.png")))
                 except:
                     import traceback
                     logger.info(traceback.format_exc())
-                    platformtools.dialog_ok("No se puede conectar", "No ha sido posible comprobar",
-                                            "si hay actualizaciones")
+                    platformtools.dialog_ok("Impossibile connettersi", "Non è stato possibile verificare",
+                                            "aggiornamenti")
                     logger.info("cpelisalacarta.platformcode.launcher Fallo al verificar la actualización")
                     config.set_setting("plugin_updates_available","0")
                     itemlist = channelselector.getmainlist()
 
             else:
-                logger.info("pelisalacarta.platformcode.launcher Check for plugin updates disabled")
+                logger.info("streamondemand.platformcode.launcher Check for plugin updates disabled")
                 config.set_setting("plugin_updates_available","0")
                 itemlist = channelselector.getmainlist()
 
@@ -150,7 +150,7 @@ def run():
                 # If it is an adult channel, and user has configured pin, asks for it
                 if channeltools.is_adult(item.channel) and config.get_setting("adult_pin") != "":
 
-                    tecleado = platformtools.dialog_input("", "PIN para canales de adultos", True)
+                    tecleado = platformtools.dialog_input("", "PIN per canali per adulti", True)
                     if tecleado is not None:
                         if tecleado == config.get_setting("adult_pin"):
                             can_open_channel = True
@@ -169,7 +169,7 @@ def run():
 
             # Checks if channel exists
             channel_file = os.path.join(config.get_runtime_path(), 'channels', item.channel+".py")
-            logger.info("pelisalacarta.platformcode.launcher channel_file=%s" % channel_file)
+            logger.info("streamondemand.platformcode.launcher channel_file=%s" % channel_file)
 
             channel = None
 
@@ -182,16 +182,16 @@ def run():
                 except ImportError:
                     exec "import channels."+item.channel+" as channel"
 
-            logger.info("pelisalacarta.platformcode.launcher running channel "+channel.__name__+" "+channel.__file__)
+            logger.info("streamondemand.platformcode.launcher running channel "+channel.__name__+" "+channel.__file__)
 
             # Special play action
             if item.action == "play":
-                logger.info("pelisalacarta.platformcode.launcher play")
+                logger.info("streamondemand.platformcode.launcher play")
                 # logger.debug("item_toPlay: " + "\n" + item.tostring('\n'))
 
                 # First checks if channel has a "play" function
                 if hasattr(channel, 'play'):
-                    logger.info("pelisalacarta.platformcode.launcher executing channel 'play' method")
+                    logger.info("streamondemand.platformcode.launcher executing channel 'play' method")
                     itemlist = channel.play(item)
                     b_favourite = item.isFavourite
                     # Play should return a list of playable URLS
@@ -203,11 +203,11 @@ def run():
 
                     # If not, shows user an error message
                     else:
-                        platformtools.dialog_ok("plugin", "No hay nada para reproducir")
+                        platformtools.dialog_ok("plugin", "Niente da riprodurre")
 
                 # If player don't have a "play" function, not uses the standard play from platformtools
                 else:
-                    logger.info("pelisalacarta.platformcode.launcher executing core 'play' method")
+                    logger.info("streamondemand.platformcode.launcher executing core 'play' method")
                     platformtools.play_video(item)
 
             # Special action for findvideos, where the plugin looks for known urls
@@ -219,7 +219,7 @@ def run():
 
                 # If not, uses the generic findvideos function
                 else:
-                    logger.info("pelisalacarta.platformcode.launcher no channel 'findvideos' method, "
+                    logger.info("streamondemand.platformcode.launcher no channel 'findvideos' method, "
                                 "executing core method")
                     from core import servertools
                     itemlist = servertools.find_video_items(item)
@@ -249,7 +249,7 @@ def run():
 
             # Special action for searching, first asks for the words then call the "search" function
             elif item.action == "search":
-                logger.info("pelisalacarta.platformcode.launcher search")
+                logger.info("streamondemand.platformcode.launcher search")
 
                 last_search = ""
                 last_search_active = config.get_setting("last_search", "buscador")
@@ -267,7 +267,7 @@ def run():
                         buscador.save_search(tecleado)
 
                     # TODO revisar 'personal.py' porque no tiene función search y daría problemas
-                    itemlist = channel.search(item, tecleado)
+                    itemlist = channel.search(item, tecleado.replace(" ", "+"))
                 else:
                     itemlist = []
                 
@@ -275,30 +275,30 @@ def run():
 
             # For all other actions
             else:
-                logger.info("pelisalacarta.platformcode.launcher executing channel '"+item.action+"' method")
+                logger.info("streamondemand.platformcode.launcher executing channel '"+item.action+"' method")
                 itemlist = getattr(channel, item.action)(item)
                 platformtools.render_items(itemlist, item)
 
     except urllib2.URLError, e:
         import traceback
-        logger.error("pelisalacarta.platformcode.launcher "+traceback.format_exc())
+        logger.error("streamondemand.platformcode.launcher "+traceback.format_exc())
 
         # Grab inner and third party errors
         if hasattr(e, 'reason'):
-            logger.info("pelisalacarta.platformcode.launcher Razon del error, codigo: "+str(e.reason[0])+", Razon: " +
+            logger.info("streamondemand.platformcode.launcher Razon del error, codigo: "+str(e.reason[0])+", Razon: " +
                         str(e.reason[1]))
             texto = config.get_localized_string(30050)  # "No se puede conectar con el sitio web"
             platformtools.dialog_ok("plugin", texto)
 
         # Grab server response errors
         elif hasattr(e, 'code'):
-            logger.info("pelisalacarta.platformcode.launcher codigo de error HTTP : %d" % e.code)
+            logger.info("streamondemand.platformcode.launcher codigo de error HTTP : %d" % e.code)
             # "El sitio web no funciona correctamente (error http %d)"
             platformtools.dialog_ok("plugin", config.get_localized_string(30051) % e.code)
     
     except:
         import traceback
-        logger.error("pelisalacarta.platformcode.launcher "+traceback.format_exc())
+        logger.error("streamondemand.platformcode.launcher "+traceback.format_exc())
         
         patron = 'File "'+os.path.join(config.get_runtime_path(), "channels", "").replace("\\", "\\\\")+'([^.]+)\.py"'
         canal = scrapertools.find_single_match(traceback.format_exc(), patron)
@@ -316,19 +316,19 @@ def run():
 
         if canal:
             platformtools.dialog_ok(
-                "Error inesperado en el canal " + canal,
-                "Puede deberse a un fallo de conexión, la web del canal "
-                "ha cambiado su estructura, o un error interno de pelisalacarta.",
-                "Para saber más detalles, consulta el log.", log_message)
+                "Errore inaspettato in " + canal,
+                "Protrebbe essere un errore di connessione. Il canale web "
+                "potrebbe aver modificato la sua struttura oppure si è verificato un errore in streamondemand.",
+                "Per dettagli consulta il log.", log_message)
         else:
             platformtools.dialog_ok(
-                "Se ha producido un error en pelisalacarta",
-                "Comprueba el log para ver mas detalles del error.",
+                "Si è verificato un errore su streamondemand",
+                "Per dettagli consulta il log.",
                 log_message)
 
 
 def set_server_list():
-    logger.info("pelisalacarta.platformcode.launcher.set_server_list")
+    logger.info("streamondemand.platformcode.launcher.set_server_list")
 
     server_white_list = []
     server_black_list = []
@@ -348,7 +348,7 @@ def set_server_list():
 
 
 def filtered_servers(itemlist):
-    logger.info("pelisalacarta.platformcode.launcher.filtered_servers")
+    logger.info("streamondemand.platformcode.launcher.filtered_servers")
     new_list = []
     white_counter = 0
     black_counter = 0
@@ -356,7 +356,7 @@ def filtered_servers(itemlist):
     server_white_list, server_black_list = set_server_list()
 
     if len(server_white_list) > 0:
-        # logger.info("pelisalacarta.platformcode.launcher filtered_servers whiteList")
+        # logger.info("streamondemand.platformcode.launcher filtered_servers whiteList")
         for item in itemlist:
             logger.info("item.title " + item.title)
             if any(server in item.title for server in server_white_list):
@@ -367,7 +367,7 @@ def filtered_servers(itemlist):
             #     logger.info("not found")
 
     if len(server_black_list) > 0:
-        # logger.info("pelisalacarta.platformcode.launcher filtered_servers blackList")
+        # logger.info("streamondemand.platformcode.launcher filtered_servers blackList")
         for item in itemlist:
             logger.info("item.title " + item.title)
             if any(server in item.title for server in server_black_list):
@@ -377,9 +377,9 @@ def filtered_servers(itemlist):
                 new_list.append(item)
                 # logger.info("not found")
 
-    logger.info("pelisalacarta.platformcode.launcher filtered_servers whiteList server %s has #%d rows" %
+    logger.info("streamondemand.platformcode.launcher filtered_servers whiteList server %s has #%d rows" %
                 (server_white_list, white_counter))
-    logger.info("pelisalacarta.platformcode.launcher filtered_servers blackList server %s has #%d rows" %
+    logger.info("streamondemand.platformcode.launcher filtered_servers blackList server %s has #%d rows" %
                 (server_black_list, black_counter))
 
     if len(new_list) == 0:
@@ -399,7 +399,7 @@ def play_from_library(item):
         @type item: item
         @param item: elemento con información
     """
-    logger.info("pelisalacarta.platformcode.launcher play_from_library")
+    logger.info("streamondemand.platformcode.launcher play_from_library")
     # logger.debug("item: \n" + item.tostring('\n'))
 
     import xbmcgui
@@ -422,7 +422,7 @@ def play_from_library(item):
     else:
         from channels import biblioteca
         from platformcode import xbmc_library
-        p_dialog = platformtools.dialog_progress_bg('pelisalacarta', 'Cargando...')
+        p_dialog = platformtools.dialog_progress_bg('streamondemand', 'Caricamento in corso...')
         p_dialog.update(0, '')
 
         itemlist = biblioteca.findvideos(item)

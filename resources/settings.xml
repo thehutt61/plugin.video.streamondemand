@@ -9,18 +9,18 @@
         <setting id="forceview" type="bool" label="30043" default="false"/>
         <setting id="debug" type="bool" label="30003" default="false"/>
         <setting type="sep"/>
-        <setting label="Canales para adultos" type="lsep"/>
+        <setting label="Canali per adulti" type="lsep"/>
         <setting id="adult_mode" type="bool" label="30002" default="false"/>
-        <setting id="adult_pin" type="text" label="PIN para abrir canal de adultos" option="hidden" default=""/>
+        <setting id="adult_pin" type="text" label="PIN per canali per adulti" option="hidden" default=""/>
         <setting type="sep"/>
-        <setting label="Actualizaciones" type="lsep"/>
+        <setting label="Aggiornamenti" type="lsep"/>
 
         <setting id="plugin_updates_available" type="number" label="Number of updates available" default="0" visible="false"/>
         <setting id="check_for_plugin_updates" type="bool" label="30001" default="true"/>
         <setting id="check_for_channel_updates" type="bool" label="30004" default="true"/>
 
-        <setting id="plugin_version_number" type="number" label="Plugin version number" default="4202" visible="false"/>
-        <setting id="plugin_version_tag" type="text" label="Plugin version tag" default="4.2.0-beta2" visible="false"/>
+        <setting id="plugin_version_number" type="number" label="Plugin version number" default="5405" visible="false"/>
+        <setting id="plugin_version_tag" type="text" label="Plugin version tag" default="5.4.5" visible="false"/>
         <setting id="channels_version_number" type="number" label="Channels version number" default="20170101" visible="false"/>
         <setting id="servers_version_number" type="number" label="Channels version number" default="20170101" visible="false"/>
     </category>
@@ -29,7 +29,7 @@
     <category label="30500">
 
         <setting type="sep"/>
-        <setting id="hidepremium" type="bool" label="Ocultar servidores de pago sin cuenta" default="false"/>
+        <setting id="hidepremium" type="bool" label="Nascondi i server pagamento senza credito" default="false"/>
 
         <setting type="sep"/>
         <setting id="realdebridpremium" type="bool" label="Real-Debrid" default="false"/>
@@ -114,9 +114,9 @@
         <setting id="librarypath" type="text" label="30067" default=""/>
     </category>
 
-    <category label="Otros"><!--30503 -->
+    <category label="Altro"><!--30503 -->
         <!--<setting type="sep" />-->
-        <setting label="Filtros" type="lsep"/>
+        <setting label="Filtri" type="lsep"/>
         <setting id="filter_servers" type="bool" label="30068" default="false"/>
         <!--<setting type="sep" />-->
         <setting label="30071" type="lsep"/>

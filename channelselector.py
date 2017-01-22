@@ -122,11 +122,10 @@ def getchanneltypes(preferred_thumb=""):
     logger.info("channelselector getchanneltypes")
 
     # Lista de categorias
-    valid_types = ["movie", "serie", "anime", "documentary", "vos", "torrent", "latino", "adult"]
-    dict_cat_lang = {'movie': config.get_localized_string(30122), 'serie': config.get_localized_string(30123),
-                     'anime': config.get_localized_string(30124), 'documentary': config.get_localized_string(30125),
-                     'vos': config.get_localized_string(30136), 'adult': config.get_localized_string(30126),
-                     'latino': config.get_localized_string(30127)}
+    valid_types = ["top channels", "movie", "serie", "anime", "documentary", "saghe", "vos", "torrent"]
+    dict_cat_lang = {'top channels' : 'Top Channels', 'movie': config.get_localized_string(30122), 'serie': config.get_localized_string(30123),
+                     'anime': config.get_localized_string(30124), 'documentary': config.get_localized_string(30125), 'saghe' : 'Saghe',
+                     'vos': config.get_localized_string(30136), 'torrent': 'Torrent'}
 
     # Lee la lista de canales
     channel_path = os.path.join(config.get_runtime_path(), "channels", '*.xml')
@@ -265,26 +264,26 @@ def filterchannels(category,preferred_thumb=""):
         if preferred_thumb=="bannermenu" and "bannermenu" in channel_parameters:
             channel_parameters["thumbnail"] = channel_parameters["bannermenu"]
 
-        channelslist.insert( 0 , Item( title="Tengo una URL"  ,action="mainlist", channel="tengourl" , thumbnail=channel_parameters["thumbnail"], type="generic" ,viewmode="list" ))
+        channelslist.insert( 0 , Item( title="[COLOR gray]Inserisci un URL[/COLOR]"  ,action="mainlist", channel="tengourl" , thumbnail=channel_parameters["thumbnail"], type="generic" ,viewmode="movie" ))
 
     return channelslist
 
 def get_thumbnail_path(preferred_thumb=""):
 
     WEB_PATH = ""
-
+    
     if preferred_thumb=="":
         thumbnail_type = config.get_setting("thumbnail_type")
         if thumbnail_type=="":
             thumbnail_type="2"
 
         if thumbnail_type=="0":
-            WEB_PATH = "http://media.tvalacarta.info/pelisalacarta/posters/"
+            WEB_PATH = "https://raw.githubusercontent.com/Zanzibar82/images/master/posters/"
         elif thumbnail_type=="1":
-            WEB_PATH = "http://media.tvalacarta.info/pelisalacarta/banners/"
+            WEB_PATH = "https://raw.githubusercontent.com/Zanzibar82/images/master/banners/"
         elif thumbnail_type=="2":
-            WEB_PATH = "http://media.tvalacarta.info/pelisalacarta/squares/"
+            WEB_PATH = "https://raw.githubusercontent.com/Zanzibar82/images/master/squares/"
     else:
-        WEB_PATH = "http://media.tvalacarta.info/pelisalacarta/"+preferred_thumb+"/"
+        WEB_PATH = "https://raw.githubusercontent.com/Zanzibar82/images/master/" + preferred_thumb + "/"
 
     return WEB_PATH

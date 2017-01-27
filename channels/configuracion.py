@@ -26,11 +26,11 @@
 # ------------------------------------------------------------
 
 import os
-import sys
+
 from core import config
-from core.item import Item
-from core import logger
 from core import filetools
+from core import logger
+from core.item import Item
 
 DEBUG = True
 CHANNELNAME = "configuracion"

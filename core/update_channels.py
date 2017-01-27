@@ -52,7 +52,7 @@ def update_channels():
         percentage = index * 100 / len(channel_files)
         # ----------------------------
         channel_id = os.path.basename(channel)[:-4]
-        t = Thread(target=updater.updatechannel, args=[channel_id])
+        t = Thread(target=updater.update_channel, args=[channel_id])
         t.setDaemon(True)
         t.start()
         # ----------------------------

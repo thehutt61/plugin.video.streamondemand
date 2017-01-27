@@ -227,7 +227,7 @@ def download_channel(channel_name):
         os.remove(local_compiled_path)
 
 
-def updateserver(server_name):
+def update_server(server_name):
     logger.info("streamondemand.core.updater updateserver('" + server_name + "')")
 
     import servertools

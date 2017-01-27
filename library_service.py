@@ -1,43 +1,44 @@
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------
-# pelisalacarta 4
+# streamondemand 5
 # Copyright 2015 tvalacarta@gmail.com
-# http://blog.tvalacarta.info/plugin-xbmc/pelisalacarta/
+# http://www.mimediacenter.info/foro/viewforum.php?f=36
 #
 # Distributed under the terms of GNU General Public License v3 (GPLv3)
 # http://www.gnu.org/licenses/gpl-3.0.html
 # ------------------------------------------------------------
 # This file is part of streamondemand 5.
 #
-# pelisalacarta 4 is free software: you can redistribute it and/or modify
+# streamondemand 5 is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# pelisalacarta 4 is distributed in the hope that it will be useful,
+# streamondemand 5 is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with pelisalacarta 4.  If not, see <http://www.gnu.org/licenses/>.
+# along with streamondemand 5.  If not, see <http://www.gnu.org/licenses/>.
 # ------------------------------------------------------------
 # Service for updating new episodes on library series
 # ------------------------------------------------------------
 
+import datetime
 import imp
 import math
 import re
-import datetime
 
 from core import config
 from core import filetools
 from core import jsontools
-from core import logger
-from core.item import Item
 from core import library
-from platformcode import xbmc_library
+from core import logger
+from core import scrapertools
+from core.item import Item
 from platformcode import platformtools
+from platformcode import xbmc_library
 
 
 def convert_old_to_v4():
@@ -147,8 +148,8 @@ def convert_old_to_v4():
 
     config.set_setting("library_version", 'v4')
 
-    platformtools.dialog_notification("Biblioteca aggiornata con il nuovo formato",
-                                      "%s serie convertite e %s serie scaricate. Continuare pe "
+    platformtools.dialog_notification("Libreria aggiornata con il nuovo formato",
+                                      "%s serie convertite e %s serie scaricate. Continuare per"
                                       "ottenere le info sugli episodi" %
                                       (series_insertadas, series_fallidas), time=12000)
 
@@ -167,7 +168,7 @@ def update(path, p_dialog, i, t, serie, overwrite):
         serie.channel = channel
         serie.url = url
 
-        heading = 'Aggiornando la biblioteca....'
+        heading = 'Aggiornando la libreria....'
         p_dialog.update(int(math.ceil((i + 1) * t)), heading, "%s: %s" % (serie.contentSerieName,
                                                                           serie.channel.capitalize()))
         try:
@@ -220,7 +221,7 @@ def check_for_update(overwrite=True):
                     import xbmc
                     xbmc.sleep(wait)
 
-            heading = 'Actualizando biblioteca....'
+            heading = 'Aggiornando la libreria....'
             p_dialog = platformtools.dialog_progress_bg('streamondemand', heading)
             p_dialog.update(0, '')
             show_list = []
@@ -315,18 +316,33 @@ def check_for_update(overwrite=True):
 
 
 if __name__ == "__main__":
-    # Se ejecuta en cada inicio
-    if config.get_setting("library_version") != 'v4':
-        platformtools.dialog_ok(config.PLUGIN_NAME.capitalize(), "Aggiornamento della biblioteca al nuovo formato",
-                                "Selezionare correttamente il nome della serie, se non sicuro seleziona 'Annulla'.")
+    if scrapertools.wait_for_internet(retry=10):
+        # -- Update channels from repository streamondemand ------
+        try:
+            from core import update_channels
+        except:
+            logger.info("streamondemand.library_service Error in update_channels")
+        # ----------------------------------------------------------------------
 
-        if not convert_old_to_v4():
-            platformtools.dialog_ok(config.PLUGIN_NAME.capitalize(),
-                                    "ERROR, nella conversione al nuovo formato")
+        # -- Update servertools and servers from repository streamondemand ------
+        try:
+            from core import update_servers
+        except:
+            logger.info("streamondemand.library_service Error in update_servers")
+        # ----------------------------------------------------------------------
+
+        # Se ejecuta en cada inicio
+        if config.get_setting("library_version") != 'v4':
+            platformtools.dialog_ok(config.PLUGIN_NAME.capitalize(), "Aggiornamento della libreria al nuovo formato",
+                                    "Selezionare correttamente il nome della serie, se non sicuro seleziona 'Annulla'.")
+
+            if not convert_old_to_v4():
+                platformtools.dialog_ok(config.PLUGIN_NAME.capitalize(),
+                                        "ERROR, nella conversione al nuovo formato")
+            else:
+                check_for_update(overwrite=False)
         else:
             check_for_update(overwrite=False)
-    else:
-        check_for_update(overwrite=False)
 
     # Se ejecuta ciclicamente
     import xbmc

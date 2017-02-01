@@ -67,7 +67,10 @@ def encode(path, _samba=False):
     @return ruta encodeada
     """
     if path.lower().startswith("smb://") or _samba:
-        path = unicode(path, "utf8")
+        try:
+            path = unicode(path, "utf8")
+        except TypeError:
+            return path
     else:
         _ENCODING = sys.getfilesystemencoding() or locale.getdefaultlocale()[1] or 'utf-8'
         path = unicode(path, "utf8")
@@ -114,7 +117,7 @@ def read(path):
             f = samba.get_file_handle_for_reading(os.path.basename(path), os.path.dirname(path)).read()
             for line in f:
                 data += line
-            f.close()
+#            f.close()
 
         except OperationFailure:
             logger.info("pelisalacarta.core.filetools read: ERROR al leer el archivo: {0}".format(path))

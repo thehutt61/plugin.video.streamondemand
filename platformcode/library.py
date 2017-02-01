@@ -62,8 +62,9 @@ xbmc_json_rpc_url = "http://" + xbmc_host + ":" + str(xbmc_port) + "/jsonrpc"
 
 DEBUG = config.get_setting("debug")
 
-FOLDER_LIBRARY = "/library" 
-LIBRARY_PATH = xbmc.translatePath("special://profile/addon_data/plugin.video." + PLUGIN_NAME + FOLDER_LIBRARY)
+# FOLDER_LIBRARY = "/library" 
+# LIBRARY_PATH = xbmc.translatePath("special://profile/addon_data/plugin.video." + PLUGIN_NAME + FOLDER_LIBRARY)
+LIBRARY_PATH = config.get_library_path()
 if not filetools.exists(LIBRARY_PATH):
     logger.info("streamondemand.platformcode.library Library path doesn't exist:" + LIBRARY_PATH)
     filetools.mkdir(LIBRARY_PATH)
@@ -371,6 +372,7 @@ def set_infolabels_from_library(itemlist, tipo):
     elif tipo == 'TVShows':
         for item in itemlist:
             data_file = filetools.join(item.path, "tvshow.json")
+            logger.info("streamondemand.platformcode.library data_file "+data_file )
             if filetools.exists(data_file):
                 infolabels = Item().fromjson(filetools.read(data_file)).infoLabels
                 item.infoLabels = infolabels

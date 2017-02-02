@@ -35,7 +35,7 @@ import scrapertools
 
 ROOT_DIR = config.get_runtime_path()
 
-REMOTE_VERSION_FILE = "https://raw.githubusercontent.com/streamondemand/plugin.video.streamondemand/master/version.xml"
+REMOTE_VERSION_FILE = "https://raw.githubusercontent.com/thehutt61/plugin.video.streamondemand/master/version.xml"
 LOCAL_VERSION_FILE = os.path.join(ROOT_DIR, "version.xml")
 LOCAL_FILE = os.path.join(ROOT_DIR, config.PLUGIN_NAME + "-")
 
@@ -43,7 +43,7 @@ LOCAL_FILE = os.path.join(ROOT_DIR, config.PLUGIN_NAME + "-")
 # No hace falta "xbmc.translatePath", get_runtime_path() ya tiene que devolver la ruta correcta
 DESTINATION_FOLDER = os.path.join(config.get_runtime_path(), "..")
 
-REMOTE_FILE = "https://github.com/streamondemand/plugin.video.streamondemand/archive/master.zip"
+REMOTE_FILE = "https://github.com/thehutt61/plugin.video.streamondemand/archive/master.zip"
 
 
 def checkforupdates():

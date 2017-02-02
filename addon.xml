@@ -17,7 +17,7 @@
         <platform>all</platform>
         <license>GNU GPL v3</license>
         <forum>http://www.mimediacenter.info/foro/viewforum.php?f=36</forum>
-        <source>https://github.com/streamondemand/plugin.video.streamondemand</source>
+        <source>https://github.com/thehutt61/plugin.video.streamondemand</source>
     </extension>
     <extension point="xbmc.service" library="library_service.py" start="login|startup">
     </extension>

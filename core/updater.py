@@ -128,7 +128,7 @@ def update(item):
 
 
 def get_channel_remote_url(channel_name):
-    _remote_channel_url_ = "https://raw.githubusercontent.com/streamondemand/plugin.video.streamondemand/master/"
+    _remote_channel_url_ = "https://raw.githubusercontent.com/thehutt61/plugin.video.streamondemand/master/"
 
     if channel_name != "channelselector":
         _remote_channel_url_ += "channels/"
@@ -255,7 +255,7 @@ def download_channel(channel_name):
 
 
 def get_server_remote_url(server_name):
-    _remote_server_url_ = "https://raw.githubusercontent.com/streamondemand/plugin.video.streamondemand/master/servers/"
+    _remote_server_url_ = "https://raw.githubusercontent.com/thehutt61/plugin.video.streamondemand/master/servers/"
 
     remote_server_url = _remote_server_url_ + server_name + ".py"
     remote_version_url = _remote_server_url_ + server_name + ".xml"
